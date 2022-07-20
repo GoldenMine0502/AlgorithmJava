@@ -1,4 +1,4 @@
-package kr.goldenmine.silver.silver5.p2740;
+package kr.goldenmine.silver.silver5.p2740S;
 
 import java.util.Scanner;
 
