@@ -1,4 +1,4 @@
-package kr.goldenmine.silver.p1629F;
+package kr.goldenmine.silver.silver1.p1629F;
 
 import java.util.Scanner;
 

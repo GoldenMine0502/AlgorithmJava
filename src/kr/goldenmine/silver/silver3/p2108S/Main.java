@@ -1,4 +1,4 @@
-package kr.goldenmine.silver.p2108;
+package kr.goldenmine.silver.silver3.p2108S;
 
 import java.util.Arrays;
 import java.util.Scanner;

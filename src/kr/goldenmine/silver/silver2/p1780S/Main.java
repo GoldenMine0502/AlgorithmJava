@@ -1,4 +1,4 @@
-package kr.goldenmine.silver.p1780;
+package kr.goldenmine.silver.silver2.p1780S;
 
 import java.io.BufferedReader;
 import java.io.IOException;

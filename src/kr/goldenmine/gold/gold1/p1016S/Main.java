@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold1.p1016;
+package kr.goldenmine.gold.gold1.p1016S;
 
 import java.util.Scanner;
 

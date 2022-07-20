@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold5.p13164;
+package kr.goldenmine.gold.gold5.p13164S;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold4.p17298;
+package kr.goldenmine.gold.gold4.p17298S;
 
 import java.io.*;
 import java.util.*;
