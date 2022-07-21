@@ -57,21 +57,22 @@ public class Main {
 
     static class SegmentTree {
         class CalculationResult {
-            int node;
+            int start;
+            int finish;
             int count;
             Set<Integer> notFinished;
 
-            public CalculationResult(int node, int count, Set<Integer> notFinished) {
-                this.node = node;
+            public CalculationResult(int start, int finish, int count, Set<Integer> notFinished) {
                 this.count = count;
                 this.notFinished = notFinished;
             }
 
             @Override
             public String toString() {
-                return "CalculationResult{" +
-                        "node=" + node +
-                        ", count=" + count +
+                return "{" +
+                        "(" + start +
+                        ", " + finish +
+                        "), count=" + count +
                         ", notFinished=" + notFinished +
                         '}';
             }
@@ -88,7 +89,7 @@ public class Main {
 
         // 대충 다 1(빌리기 가능)으로 설정
         public CalculationResult init(int start, int end, int node) {
-            if(start == end) return this.available[node] = new CalculationResult(node, 1, new HashSet<>());
+            if(start == end) return this.available[node] = new CalculationResult(start, end, 1, new HashSet<>());
 
             int mid = (start + end) / 2;
 
@@ -99,17 +100,19 @@ public class Main {
             if(a == null) return b;
             if(b == null) return a;
 
-            int aLeft = Integer.MAX_VALUE;
-            int aRight = Integer.MIN_VALUE;
-
-
-
             HashSet<Integer> result = new HashSet<>(a.notFinished.size() + b.notFinished.size());
-            result.addAll(a.notFinished);
+            for(int i : a.notFinished) {
+                if(!(b.start <= i && i < b.finish)) {
+                    result.add(i);
+                }
+            }
+            for(int i : b.notFinished) {
+                if(!(a.start <= i && i < a.finish)) {
+                    result.add(i);
+                }
+            }
 
-            result.addAll(b.notFinished);
-
-            CalculationResult c = new CalculationResult(a.node, a.count + b.count, result);
+            CalculationResult c = new CalculationResult(Math.min(a.start, b.start), Math.max(a.finish, b.finish), a.count + b.count, result);
 
             return c;
         }
@@ -140,45 +143,40 @@ public class Main {
             return merge(count(start, mid, node * 2, left, right, leftOriginal, rightOriginal), count(mid + 1, end, node * 2 + 1, left, right, leftOriginal, rightOriginal));
         }
 
-        public void updateDiff(int index, int diff) {
-            updateDiff(0, arr.length - 1, 1, index, diff);
+        public void swap(int index, int index2) {
+            swap(0, arr.length - 1, 1, index, index2);
         }
 
-        public void update(int index, int value) {
-            int diff = value - arr[index];
-
-            updateDiff(index, diff);
-        }
-
-        public void updateDiff(int start, int end, int node, int index, int diff) {
+        public void swap(int start, int end, int node, int index, int index2) {
             if(index < start || index > end) return;
 
             int previous = arr[index];
-            int current = arr[index] + diff;
+            int current = arr[index2];
             if(start <= current && current <= end) { // 범위 안의 친구인지 밖의 친구인지 확인
                 if(start <= previous && previous <= end) { // 애초부터 안에서 안으로 이동한 경우는 더하면 안 됨
 
                 } else {
-                    System.out.println("plus");
                     available[node].count++;
-                    available[node].notFinished.remove(current);
+                    available[node].notFinished.remove(previous);
                 }
             } else {
-                System.out.println("minus");
+//                System.out.println("minus");
                 available[node].count--;
                 available[node].notFinished.add(current);
             }
-            System.out.println("update: [" + node + "] " + start + " <= " + current + " < " + end);
+//            System.out.println("update: [" + node + "] " + start + " <= " + current + " < " + end + ", " + available[node].notFinished);
 
             if (start == end) return;
 
             int mid = (start + end) / 2;
 
-            updateDiff(start, mid, node * 2, index, diff);
-            updateDiff(mid + 1, end, node * 2 + 1, index, diff);
+            swap(start, mid, node * 2, index, index2);
+            swap(mid + 1, end, node * 2 + 1, index, index2);
 
             if(node == 1) {
-                arr[index] += diff;
+                int temp = arr[index];
+                arr[index] = arr[index2];
+                arr[index2] = temp;
             }
         }
 
@@ -226,8 +224,7 @@ public class Main {
             int B = scan.nextInt();
 
             if(Q == 0) { // 진일이가 ㅈㄹ하는 상황
-                tree.update(A, B);
-                tree.update(B, A);
+                tree.swap(A, B);
 
 //                tree.printAll();
             } else { // 손님이 빌리는 상황
@@ -254,15 +251,14 @@ public class Main {
         SegmentTree tree = new SegmentTree(arr);
         tree.printAll();
 
-        tree.update(1, 3);
-        tree.update(3, 1);
-//        tree.update(3, 3);
+        tree.swap(1, 3);
         tree.printAll();
+        System.out.println(tree.count(0, 3));
 
-        tree.update(1, 1);
-        tree.update(3, 3);
-//        tree.update(3, 3);
+        tree.swap(3, 1);
         tree.printAll();
+//        tree.update(3, 3);
+//        tree.printAll();
 //        System.out.println(tree.count(0, 4));
 //        System.out.println(tree.count(0, 1));
 //        System.out.println(tree.count(0, 2));

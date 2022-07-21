@@ -138,6 +138,10 @@ public class Main {
             return Math.min(find(start, mid, node * 2, left, right), find(mid + 1, end, node * 2 + 1, left, right));
         }
 
+        public void update(int start, int end, int node, int index, int value) {
+
+        }
+
         public void printArrAll() {
             for(int i = 0; i < arr.length; i++) {
                 System.out.print(arr[i] + " ");
