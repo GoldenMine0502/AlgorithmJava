@@ -1,8 +1,10 @@
-package kr.goldenmine.platinum.platinum3.p9345SegmentTree;
+package kr.goldenmine.platinum.platinum3.p9345SegmentTreeF;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -54,31 +56,71 @@ public class Main {
     }
 
     static class SegmentTree {
+        class CalculationResult {
+            int node;
+            int count;
+            Set<Integer> notFinished;
+
+            public CalculationResult(int node, int count, Set<Integer> notFinished) {
+                this.node = node;
+                this.count = count;
+                this.notFinished = notFinished;
+            }
+
+            @Override
+            public String toString() {
+                return "CalculationResult{" +
+                        "node=" + node +
+                        ", count=" + count +
+                        ", notFinished=" + notFinished +
+                        '}';
+            }
+        }
+
         private int[] arr;
-        private int[] available;
+        private CalculationResult[] available;
 
         public SegmentTree(int[] arr) {
             this.arr = arr;
-            this.available = new int[4 * arr.length];
+            this.available = new CalculationResult[4 * arr.length];
             init(0, arr.length - 1, 1);
         }
 
         // 대충 다 1(빌리기 가능)으로 설정
-        public int init(int start, int end, int node) {
-            if(start == end) return this.available[node] = 1;
+        public CalculationResult init(int start, int end, int node) {
+            if(start == end) return this.available[node] = new CalculationResult(node, 1, new HashSet<>());
 
             int mid = (start + end) / 2;
 
-            return this.available[node] = init(start, mid, node * 2) + init(mid + 1, end, node * 2 + 1);
+            return this.available[node] = merge(init(start, mid, node * 2), init(mid + 1, end, node * 2 + 1));
         }
 
-        public int count(int left, int right) {
+        public CalculationResult merge(CalculationResult a, CalculationResult b) {
+            if(a == null) return b;
+            if(b == null) return a;
+
+            int aLeft = Integer.MAX_VALUE;
+            int aRight = Integer.MIN_VALUE;
+
+
+
+            HashSet<Integer> result = new HashSet<>(a.notFinished.size() + b.notFinished.size());
+            result.addAll(a.notFinished);
+
+            result.addAll(b.notFinished);
+
+            CalculationResult c = new CalculationResult(a.node, a.count + b.count, result);
+
+            return c;
+        }
+
+        public CalculationResult count(int left, int right) {
             return count(0, arr.length - 1, 1, left, right, left, right);
         }
 
-        public int count(int start, int end, int node, int left, int right, int leftOriginal, int rightOriginal) {
+        public CalculationResult count(int start, int end, int node, int left, int right, int leftOriginal, int rightOriginal) {
             // 범위 밖에 있는 경우
-            if(left > end || right < start) return 0;
+            if(left > end || right < start) return null;
 
             System.out.println("visit: " + node + ", " + start + ", " + end + ", " + left + ", " + right);
             // 범위 안에 있는 경우
@@ -95,7 +137,7 @@ public class Main {
             // 범위가 걸쳐있는 경우
             int mid = (start + end) / 2;
 
-            return count(start, mid, node * 2, left, right, leftOriginal, rightOriginal) + count(mid + 1, end, node * 2 + 1, left, right, leftOriginal, rightOriginal);
+            return merge(count(start, mid, node * 2, left, right, leftOriginal, rightOriginal), count(mid + 1, end, node * 2 + 1, left, right, leftOriginal, rightOriginal));
         }
 
         public void updateDiff(int index, int diff) {
@@ -111,14 +153,22 @@ public class Main {
         public void updateDiff(int start, int end, int node, int index, int diff) {
             if(index < start || index > end) return;
 
+            int previous = arr[index];
+            int current = arr[index] + diff;
+            if(start <= current && current <= end) { // 범위 안의 친구인지 밖의 친구인지 확인
+                if(start <= previous && previous <= end) { // 애초부터 안에서 안으로 이동한 경우는 더하면 안 됨
 
-            int value = arr[index] + diff;
-            if(start <= value && value <= end) {
-                available[node] = 1;
+                } else {
+                    System.out.println("plus");
+                    available[node].count++;
+                    available[node].notFinished.remove(current);
+                }
             } else {
-                available[node] = 0;
+                System.out.println("minus");
+                available[node].count--;
+                available[node].notFinished.add(current);
             }
-//            System.out.println("update: [" + node + "] " + start + " <= " + value + " < " + end);
+            System.out.println("update: [" + node + "] " + start + " <= " + current + " < " + end);
 
             if (start == end) return;
 
@@ -199,14 +249,20 @@ public class Main {
 //        }
 
 //        int[] arr = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        int[] arr = {1,2,3,4,5};
+        int[] arr = {0,1,2,3,4};
 
         SegmentTree tree = new SegmentTree(arr);
         tree.printAll();
 
-//        tree.update(2, 4);
+        tree.update(1, 3);
+        tree.update(3, 1);
 //        tree.update(3, 3);
-//        tree.printAll();
+        tree.printAll();
+
+        tree.update(1, 1);
+        tree.update(3, 3);
+//        tree.update(3, 3);
+        tree.printAll();
 //        System.out.println(tree.count(0, 4));
 //        System.out.println(tree.count(0, 1));
 //        System.out.println(tree.count(0, 2));
