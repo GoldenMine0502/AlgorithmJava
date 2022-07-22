@@ -1,4 +1,4 @@
-package kr.goldenmine.platinum.platinum4.p16975;
+package kr.goldenmine.platinum.platinum5.p1517;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -162,34 +162,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
-        long[] arr = new long[N];
-
-        for(int i = 0; i < arr.length; i++) {
-            arr[i] = scan.nextLong();
-        }
-
-        LongSumSegmentTree tree = new LongSumSegmentTree(arr);
-
-        int k = scan.nextInt();
-//        System.out.println(k);
-
-        for(int i = 0; i < k; i++) {
-            int command = scan.nextInt();
-
-            if(command == 1) {
-                int I = scan.nextInt();
-                int J = scan.nextInt();
-                int K = scan.nextInt();
-
-                tree.updateRanged(I - 1, J - 1, K);
-            } else {
-                int x = scan.nextInt();
-//                tree.printTreeAll();
-                System.out.println(tree.findOneValue(x - 1));
-            }
-        }
     }
 }
