@@ -1,8 +1,6 @@
-package kr.goldenmine.platinum.platinum3.p9345_2;
+package kr.goldenmine.platinum.platinum3.p9345_2S;
 
 import java.io.*;
-import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -76,6 +74,10 @@ public class Main {
             this.arr = arr;
             this.tree = new Node[4 * arr.length];
 
+            for(int i = 0; i < this.tree.length; i++) {
+                this.tree[i] = new Node(Integer.MAX_VALUE, Integer.MIN_VALUE);
+            }
+
             init(0, arr.length - 1, 1);
         }
 
@@ -111,18 +113,20 @@ public class Main {
             return merge(find(start, mid, node * 2, left, right), find(mid + 1, end, node * 2 + 1, left, right));
         }
 
-        public void update(int index, int diff) {
-            update(0, arr.length - 1, 1, index, diff);
+        public void update(int index, int value) {
+            update(0, arr.length - 1, 1, index, value);
         }
 
         public Node update(int start, int end, int node, int index, int value) {
-            if(index < start || index > end) return new Node(Integer.MAX_VALUE, Integer.MIN_VALUE);
+//            System.out.println("access " + start + ", " + end + ", " + node + ", " + index);
+            if(index < start || index > end) return tree[node];
 
             if(node == 1) {
                 arr[index] = value;
             }
 
-            if (start == end) {
+            if (start == end) { // 최하위 클래스
+//                System.out.println("update node " + node + " to (" + value + ", " + value + "), " + start + " " + index);
                 return tree[node] = new Node(value, value);
             }
 
@@ -131,7 +135,8 @@ public class Main {
             Node a = update(start, mid, node * 2, index, value);
             Node b = update(mid + 1, end, node * 2 + 1, index, value);
 
-            return merge(a, b);
+//            System.out.println("update node " + node + " from" + tree[node] + " to " + merge(a, b) + ": " + a + " (" + start + ", " + mid + ") / " + b + " (" + (mid + 1) + ", " + end + ")" + " " + index);
+            return tree[node] = merge(a, b);
         }
 
         public void printArrAll() {
@@ -160,7 +165,7 @@ public class Main {
 
     static FastReader scan = new FastReader();
 
-    public static void solve() {
+    public static void solve() throws IOException {
         int N = scan.nextInt(); // DVD의 수
         int K = scan.nextInt(); /// 사건의 수
 
@@ -170,6 +175,9 @@ public class Main {
         }
 
         MinMaxSegmentTree tree = new MinMaxSegmentTree(arr);
+
+        BufferedWriter output = new BufferedWriter(
+                new OutputStreamWriter(System.out));
 
         for(int i = 0; i < K; i++) {
             int Q = scan.nextInt();
@@ -182,22 +190,25 @@ public class Main {
                 tree.update(A, prevB);
                 tree.update(B, prevA);
 
-                tree.printAll();
+//                tree.printAll();
             } else { // 손님이 빌리는 상황
                 MinMaxSegmentTree.Node node = tree.find(A, B);
 
-                System.out.println("===");
-                System.out.println(A);
-                System.out.println(B);
-                System.out.println(node.min);
-                System.out.println(node.max);
+//                System.out.println("===");
+//                System.out.println(A);
+//                System.out.println(B);
+//                System.out.println(node.min);
+//                System.out.println(node.max);
 
                 if(A == node.min && B == node.max) {
-                    System.out.println("YES");
+                    output.write("YES");
                 } else {
-                    System.out.println("NO");
+                    output.write("NO");
                 }
+                output.newLine();
+
             }
+            output.flush();
         }
     }
 
@@ -207,6 +218,16 @@ public class Main {
         for(int i = 0; i < T; i++) {
             solve();
         }
+
+//        int[] arr = {0, 1, 2, 3, 4};
+//
+//        MinMaxSegmentTree tree = new MinMaxSegmentTree(arr);
+//        tree.printAll();
+//
+//        tree.update(1, 3);
+////        tree.update(3, 1);
+//
+//        tree.printAll();
     }
 
 }
