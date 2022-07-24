@@ -3,6 +3,8 @@ package kr.goldenmine.silver.silver4.p1120S;
 import java.util.Scanner;
 
 public class Main {
+
+
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 

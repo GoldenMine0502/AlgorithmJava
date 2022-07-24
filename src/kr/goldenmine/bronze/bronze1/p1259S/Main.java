@@ -1,11 +1,11 @@
-package kr.goldenmine;
+package kr.goldenmine.bronze.bronze1.p1259S;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class FastInputs {
+public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
@@ -59,6 +59,27 @@ public class FastInputs {
                 e.printStackTrace();
             }
             return str;
+        }
+    }
+
+
+    public static void main(String[] args) {
+        FastReader scan = new FastReader();
+
+        String line;
+
+        while(!(line = scan.nextLine()).equals("0")) {
+            boolean verify = true;
+
+            for(int index = 0; index < line.length(); index++) {
+                int otherIndex = line.length() - 1 - index;
+
+                if(line.charAt(index) != line.charAt(otherIndex)) {
+                    verify = false;
+                }
+            }
+
+            System.out.println(verify ? "yes" : "no");
         }
     }
 }

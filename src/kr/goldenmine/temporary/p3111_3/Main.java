@@ -1,11 +1,12 @@
-package kr.goldenmine;
+package kr.goldenmine.temporary.p3111_3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
-public class FastInputs {
+public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
@@ -60,5 +61,17 @@ public class FastInputs {
             }
             return str;
         }
+    }
+
+    public static void main(String[] args) {
+        FastReader scan = new FastReader();
+
+        String A = scan.next();
+        String T = scan.next();
+
+        ArrayDeque<Character> deque = new ArrayDeque<>();
+//        List<Character> buffer = new ArrayList<>();
+
+
     }
 }
