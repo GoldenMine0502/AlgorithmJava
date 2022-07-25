@@ -1,4 +1,4 @@
-package kr.goldenmine.platinum.platinum5.p1725;
+package kr.goldenmine.platinum.platinum5.p6549_3A;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -148,17 +148,19 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
+        String line;
 
-        long[] arr = new long[N];
+        while (!(line = scan.nextLine()).equals("0")) {
+            String[] split = line.split(" ");
 
-        for(int i = 0; i < N; i++) {
-            arr[i] = scan.nextLong();
+            long[] arr = new long[split.length - 1];
+
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = Integer.parseInt(split[i + 1]);
+            }
+
+            long area = getArea(arr, 0, arr.length - 1);
+            System.out.println(area);
         }
-
-        long area = getArea(arr, 0, arr.length - 1);
-
-        System.out.println(area);
     }
 }
-
