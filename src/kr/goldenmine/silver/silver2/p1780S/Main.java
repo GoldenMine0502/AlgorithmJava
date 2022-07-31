@@ -30,41 +30,20 @@ public class Main {
         }
 
         int nextInt() { return Integer.parseInt(next()); }
-
-        long nextLong() { return Long.parseLong(next()); }
-
-        double nextDouble()
-        {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine()
-        {
-            String str = "";
-            try {
-                if(st.hasMoreTokens()){
-                    str = st.nextToken("\n");
-                }
-                else{
-                    str = br.readLine();
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            return str;
-        }
     }
 
+    // global minus = 0
     static int minus = 0;
     static int zero = 0;
     static int one = 0;
 
     public static void main(String[] args) {
+        // 값 입력받기
         FastReader reader = new FastReader();
 
         int N = reader.nextInt();
 
+        // 데이터 저장할 2차원배열
         int[][] arr = new int[N][N];
 
         for(int i = 0; i < N; i++) {
@@ -73,6 +52,7 @@ public class Main {
             }
         }
 
+        // solve
         checkOne(arr, 0, 0, N, N);
 
         System.out.println(minus);
@@ -80,14 +60,16 @@ public class Main {
         System.out.println(one);
     }
 
+    // def checkOne(arr, startX, startY, finishX, finishY)
     public static void checkOne(int[][] arr, int startX, int startY, int finishX, int finishY) {
         int first = arr[startY][startX];
 
+        // cut = 해당 구획이 다 똑같은 값이 아니라서 9등분 해야하는 경우
         boolean cut = false;
 
-        for(int i = startY; i < finishY; i++) {
-            for(int j = startX; j < finishX; j++) {
-                if(first != arr[i][j]) {
+        for(int i = startY; i < finishY; i++) { // for i in range(startY, finishY):
+            for(int j = startX; j < finishX; j++) { // for j in range(startX, finishX):
+                if(first != arr[i][j]) { // if first != arr[i][j]:
                     cut = true;
                     break;
                 }
@@ -97,6 +79,7 @@ public class Main {
         }
 
         if(cut) {
+            // 9등분
             int cutSize = (finishX - startX) / 3;
 
             for(int i = 0; i < 3; i++) {
@@ -105,8 +88,9 @@ public class Main {
                 }
             }
         } else {
+            // 9등분 안하는거면 -1, 0, 1인지에 따라 값 더해주기, 전역변수
             if(first == -1) {
-                minus++;
+                minus++; // minus += 1
             }
             if(first == 0) {
                 zero++;
