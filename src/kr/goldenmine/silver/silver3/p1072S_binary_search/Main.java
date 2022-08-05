@@ -1,9 +1,8 @@
-package kr.goldenmine.gold.gold2.p1300;
+package kr.goldenmine.silver.silver3.p1072S_binary_search;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -63,50 +62,33 @@ public class Main {
         }
     }
 
-//    public static int binarySearch(int[] arr, int value) {
-//        int left = 0;
-//        int right = arr.length - 1;
-//
-//        while(true) {
-//            int mid = (left + right) / 2;
-//            if(arr[mid] == value) {
-//                return mid;
-//            } else if(arr[mid] > value) {
-//                right = mid - 1;
-//            } else {
-//                left = mid + 1;
-//            }
-//
-//            if(left > right) return -1;
-//        }
-//    }
+    public static int getPercentage(long X, long Y) {
+        return (int)(((double)Y * 100 / X));
+    }
 
-    public static long lowerBound(int N, int K) {
-        long lo = 1;
-        long hi = K;
+    public static long upperBound(int X, int Y) {
+        long lo = 0;
+        long hi = Long.MAX_VALUE;
+
+        int currentPercentage = getPercentage(X, Y);
+        if(currentPercentage >= 99) return -1;
+
+//        int checkPercentage = (int)(((double)Y / X) * 1000);
+//        if(checkPercentage >= 995) return -1;
 
         // lo가 hi랑 같아질 때 까지 반복
         while (lo < hi) {
+
             long mid = (lo + hi) / 2; // 중간위치를 구한다.
-            long count = 0;
 
-            for(int i = 1; i <= N; i++) {
-                count += Math.min(mid / i, N);
-            }
-
-            /*
-             *  key 값이 중간 위치의 값보다 작거나 같을 경우
-             *
-             *  (중복 원소에 대해 왼쪽으로 탐색하도록 상계를 내린다.)
-             */
-            if (K <= count) {
+            // key값이 중간 위치의 값보다 작을 경우
+            if (currentPercentage < getPercentage(X + mid, Y + mid)) {
                 hi = mid;
             }
-
+            // 중복원소의 경우 else에서 처리된다.
             else {
                 lo = mid + 1;
             }
-
         }
 
         return lo;
@@ -115,9 +97,10 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
-        int k = scan.nextInt();
+        int X = scan.nextInt();
+        int Y = scan.nextInt();
 
-        System.out.println(lowerBound(N, k));
+        long result = upperBound(X, Y);
+        System.out.println(result);
     }
 }

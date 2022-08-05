@@ -1,9 +1,8 @@
-package kr.goldenmine.gold.gold2.p1300;
+package kr.goldenmine.silver.silver3.p4779S_recursive;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -61,63 +60,50 @@ public class Main {
             }
             return str;
         }
+
+        boolean hasMoreReadableContents() {
+            try {
+                return (st != null && st.hasMoreTokens()) || (br.ready());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
     }
 
-//    public static int binarySearch(int[] arr, int value) {
-//        int left = 0;
-//        int right = arr.length - 1;
-//
-//        while(true) {
-//            int mid = (left + right) / 2;
-//            if(arr[mid] == value) {
-//                return mid;
-//            } else if(arr[mid] > value) {
-//                right = mid - 1;
-//            } else {
-//                left = mid + 1;
-//            }
-//
-//            if(left > right) return -1;
-//        }
-//    }
+    public static void remove(char[] arr, int left, int right) {
+        if(right - left <= 1) return;
 
-    public static long lowerBound(int N, int K) {
-        long lo = 1;
-        long hi = K;
+        int divide3 = (right - left) / 3;
 
-        // lo가 hi랑 같아질 때 까지 반복
-        while (lo < hi) {
-            long mid = (lo + hi) / 2; // 중간위치를 구한다.
-            long count = 0;
-
-            for(int i = 1; i <= N; i++) {
-                count += Math.min(mid / i, N);
-            }
-
-            /*
-             *  key 값이 중간 위치의 값보다 작거나 같을 경우
-             *
-             *  (중복 원소에 대해 왼쪽으로 탐색하도록 상계를 내린다.)
-             */
-            if (K <= count) {
-                hi = mid;
-            }
-
-            else {
-                lo = mid + 1;
-            }
-
+        for(int i = left + divide3; i < left + 2 * divide3; i++) {
+            arr[i] = ' ';
         }
 
-        return lo;
+        remove(arr, left, left + divide3);
+        remove(arr, left + 2 * divide3, left + 3 * divide3);
     }
 
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
-        int k = scan.nextInt();
+        do {
+            int N = scan.nextInt();
+            int N3 = (int) Math.pow(3, N);
 
-        System.out.println(lowerBound(N, k));
+            char[] arr = new char[N3];
+            for (int i = 0; i < N3; i++) {
+                arr[i] = '-';
+            }
+
+            remove(arr, 0, N3);
+
+            StringBuilder sb = new StringBuilder(N3);
+            for (int i = 0; i < N3; i++) {
+                sb.append(arr[i]);
+            }
+            System.out.println(sb);
+        } while(scan.hasMoreReadableContents());
     }
 }

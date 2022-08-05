@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold5.p2470F;
+package kr.goldenmine.silver.silver4.p2776;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,7 +63,8 @@ public class Main {
         }
     }
 
-    public static int binarySearch(long[] arr, long value) {
+    // 내림차순 기준
+    public static int binarySearch(int[] arr, int value) {
         int left = 0;
         int right = arr.length - 1;
 
@@ -77,62 +78,43 @@ public class Main {
                 left = mid + 1;
             }
 
-            if(left >= right) return left;
+            if(left > right) return -1;
         }
     }
 
-    public static void main(String[] args) {
-        FastReader scan = new FastReader();
+    static FastReader scan = new FastReader();
 
+    public static void solve() {
         int N = scan.nextInt();
+        int[] arr = new int[N];
 
-        long[] arr = new long[N];
         for(int i = 0; i < N; i++) {
             arr[i] = scan.nextInt();
         }
 
         Arrays.sort(arr);
 
-        int[] results = new int[N];
-        long minimum = Long.MAX_VALUE;
+        int M = scan.nextInt();
 
-        int minimumIndex1 = -1;
-        int minimumIndex2 = -1;
+        StringBuilder sb = new StringBuilder(N * 2);
 
-        for(int i = 0; i < N; i++) {
-            long minus = -arr[i];
-            int index = binarySearch(arr, minus);
-            long min = Math.abs(arr[i] + arr[index]);
-            int minIndex = index;
+        for(int i = 0; i < M; i++) {
+            int value = scan.nextInt();
 
-            if(index >= 1) {
-                long min2 = Math.abs(arr[i] + arr[index - 1]);
-                if(min2 < min) {
-                    min = min2;
-                    minIndex = index - 1;
-                }
-            }
-            if(index < N - 1) {
-                long min2 = Math.abs(arr[i] + arr[index + 1]);
-                if(min2 < min) {
-                    min = min2;
-                    minIndex = index + 1;
-                }
-            }
+            sb.append(binarySearch(arr, value) >= 0 ? 1 : 0);
 
-//            System.out.println(arr[i] + ", " + index + ", " + min);
-
-            if(min < minimum) {
-                minimum = min;
-                minimumIndex1 = i;
-                minimumIndex2 = minIndex;
-            }
+            if(i != M - 1)
+                sb.append("\n");
         }
 
-        if(arr[minimumIndex1] < arr[minimumIndex2]) {
-            System.out.println(arr[minimumIndex1] + " " + arr[minimumIndex2]);
-        } else {
-            System.out.println(arr[minimumIndex2] + " " + arr[minimumIndex1]);
+        System.out.println(sb);
+    }
+
+    public static void main(String[] args) {
+        int T = scan.nextInt();
+
+        for(int i = 0; i < T; i++) {
+            solve();
         }
     }
 }

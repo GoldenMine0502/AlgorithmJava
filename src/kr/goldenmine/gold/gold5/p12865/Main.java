@@ -65,11 +65,12 @@ public class Main {
 
     public static void main(String[] args) {
 //        Scanner scan;
-//        FastReader scan = new FastReader();
+        FastReader scan = new FastReader();
 
-//        int N = scan.nextInt();
-//        int K = scan.nextInt();
+        int N = scan.nextInt();
+        int K = scan.nextInt();
 
+        int[][] arr = new int[N][2];
 
     }
 }
