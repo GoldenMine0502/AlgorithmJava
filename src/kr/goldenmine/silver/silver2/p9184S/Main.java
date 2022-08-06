@@ -1,10 +1,8 @@
-package kr.goldenmine.silver.silver2.p11286;
+package kr.goldenmine.silver.silver2.p9184S;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -64,56 +62,43 @@ public class Main {
         }
     }
 
+    public static long recursive(long[][][] cache, int a, int b, int c) {
+        if(cache[a + 50][b + 50][c + 50] > 0) return cache[a + 50][b + 50][c + 50];
+
+        if(a <= 0 || b <= 0 || c <= 0) return cache[a + 50][b + 50][c + 50] = 1;
+
+        if(a > 20 || b > 20 || c > 20) return cache[a + 50][b + 50][c + 50] = recursive(cache, 20, 20, 20);
+
+        if(a < b && b < c)
+            return cache[a + 50][b + 50][c + 50] =
+                    recursive(cache, a, b, c - 1) +
+                    recursive(cache, a, b - 1, c - 1) -
+                    recursive(cache, a, b - 1, c);
+
+        return cache[a + 50][b + 50][c + 50] =
+                recursive(cache, a - 1, b, c) +
+                recursive(cache, a - 1, b - 1, c) +
+                recursive(cache, a - 1, b, c - 1) -
+                recursive(cache, a - 1, b - 1, c - 1);
+    }
+
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return -Integer.compare(Math.abs(o1), Math.abs(o2));
-            }
-        });
+        int a, b, c;
 
-        int N = scan.nextInt();
+        long[][][] cache = new long[101][101][101];
 
-        for(int i = 0; i < N; i++) {
-            int value = scan.nextInt();
+        while(true) {
+            a = scan.nextInt();
+            b = scan.nextInt();
+            c = scan.nextInt();
 
-            if(value != 0) {
-                priorityQueue.add(value);
+            if(a != -1 || b != -1 || c != -1) {
+                System.out.println("w(" + a + ", " + b + ", " + c + ") = " + recursive(cache, a, b, c));
             } else {
-                if(priorityQueue.size() > 0) {
-                    System.out.println(priorityQueue.remove());
-                } else {
-                    System.out.println(0);
-                }
+                break;
             }
-        }
-    }
-
-    static class MyPriorityQueue {
-        int[] arr;
-
-        int size;
-
-        MyPriorityQueue(int size) {
-            arr = new int[size + 1];
-        }
-
-        void add(int value) {
-            arr[++size] = value;
-
-            int current = size;
-            while(current > 1 && arr[current/2] > arr[current]) {
-                swap(current/2, current);
-                current /= 2;
-            }
-        }
-
-        void swap(int index, int index2) {
-            int temp = arr[index];
-            arr[index] = arr[index2];
-            arr[index2] = temp;
         }
     }
 }

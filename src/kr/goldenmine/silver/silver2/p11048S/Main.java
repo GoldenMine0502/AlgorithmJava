@@ -1,10 +1,9 @@
-package kr.goldenmine.silver.silver2.p11279;
+package kr.goldenmine.silver.silver2.p11048S;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -67,48 +66,28 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>(Collections.reverseOrder());
-
         int N = scan.nextInt();
+        int M = scan.nextInt();
+
+        int[][] arr = new int[1001][1001];
 
         for(int i = 0; i < N; i++) {
-            int value = scan.nextInt();
-
-            if(value != 0) {
-                priorityQueue.add(value);
-            } else {
-                if(priorityQueue.size() > 0) {
-                    System.out.println(priorityQueue.remove());
-                } else {
-                    System.out.println(0);
-                }
-            }
-        }
-    }
-
-    static class MyPriorityQueue {
-        int[] arr;
-
-        int size;
-
-        MyPriorityQueue(int size) {
-            arr = new int[size + 1];
-        }
-
-        void add(int value) {
-            arr[++size] = value;
-
-            int current = size;
-            while(current > 1 && arr[current/2] > arr[current]) {
-                swap(current/2, current);
-                current /= 2;
+            for(int j = 0; j < M; j++) {
+                arr[i][j] = scan.nextInt();
             }
         }
 
-        void swap(int index, int index2) {
-            int temp = arr[index];
-            arr[index] = arr[index2];
-            arr[index2] = temp;
+        int[][] dp = new int[1001][1001];
+        dp[0][0] = arr[0][0];
+
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                if(i > 0 && j > 0) dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + arr[i][j]);
+                if(i > 0) dp[i][j] = Math.max(dp[i][j], dp[i - 1][j] + arr[i][j]);
+                if(j > 0) dp[i][j] = Math.max(dp[i][j], dp[i][j - 1] + arr[i][j]);
+            }
         }
+
+        System.out.println(dp[N - 1][M - 1]);
     }
 }
