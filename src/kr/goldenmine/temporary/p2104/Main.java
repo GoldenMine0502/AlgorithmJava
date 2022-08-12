@@ -62,6 +62,12 @@ public class Main {
         }
     }
 
+    class Data {
+        long maxArea;
+        int start;
+        int finish;
+    }
+
     public static long getArea(long[] histogram, int left, int right) {
 
         // 막대 폭(넓이)이 1일경우 최솟값과 높이를 곱한다.

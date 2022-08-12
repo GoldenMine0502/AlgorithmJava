@@ -1,8 +1,7 @@
-package kr.goldenmine.gold.gold5.p15553;
+package kr.goldenmine.gold.gold5.p15553_greedy;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Main {
     private static final int BUFFER_SIZE = 1 << 19;

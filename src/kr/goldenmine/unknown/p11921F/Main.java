@@ -1,8 +1,4 @@
-package kr.goldenmine.unknown.p11921;
-
-import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+package kr.goldenmine.unknown.p11921F;
 
 public class Main {
 //    private static int BUFFER_SIZE = 1 << 20;

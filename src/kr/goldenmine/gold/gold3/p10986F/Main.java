@@ -3,6 +3,7 @@ package kr.goldenmine.gold.gold3.p10986F;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -132,6 +133,8 @@ public class Main {
             sum %= M;
             cache[(int)sum]++;
         }
+
+//        System.out.println(Arrays.toString(cache));
 
         long answer = 0;
         answer += cache[0];

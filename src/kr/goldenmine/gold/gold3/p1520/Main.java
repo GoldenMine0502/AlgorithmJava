@@ -96,8 +96,8 @@ public class Main {
 
         int[][] cache = new int[M][N];
 
-        for(int i = 0; i < M; i++) {
-            for(int j = 0; j < N; j++) {
+        for(int j = 0; j < M; j++) {
+            for(int i = 0; i < N; i++) {
 
             }
         }

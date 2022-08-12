@@ -1,8 +1,9 @@
-package kr.goldenmine.silver.silver4.p10816S;
+package kr.goldenmine.temporary.p22345;
 
-import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main {
     static class FastReader {
@@ -61,19 +62,19 @@ public class Main {
         }
     }
 
-    class Range {
-        int min;
-        int max;
+    static class Data {
+        int position;
+        int times;
 
-        public Range(int min, int max) {
-            this.min = min;
-            this.max = max;
+        public Data(int position, int times) {
+            this.position = position;
+            this.times = times;
         }
     }
 
-    public static int lowerBound(int[] arr, int key) {
+    public static int lowerBound(List<Data> arr, int key) {
         int lo = 0;
-        int hi = arr.length;
+        int hi = arr.size();
 
         // lo가 hi랑 같아질 때 까지 반복
         while (lo < hi) {
@@ -85,7 +86,7 @@ public class Main {
              *
              *  (중복 원소에 대해 왼쪽으로 탐색하도록 상계를 내린다.)
              */
-            if (key <= arr[mid]) {
+            if (key <= arr.get(mid).position) {
                 hi = mid;
             }
 
@@ -98,73 +99,30 @@ public class Main {
         return lo;
     }
 
-    public static int upperBound(int[] arr, int key) {
-        int lo = 0;
-        int hi = arr.length;
-
-        // lo가 hi랑 같아질 때 까지 반복
-        while (lo < hi) {
-
-            int mid = (lo + hi) / 2; // 중간위치를 구한다.
-
-            // key값이 중간 위치의 값보다 작을 경우
-            if (key < arr[mid]) {
-                hi = mid;
-            }
-            // 중복원소의 경우 else에서 처리된다.
-            else {
-                lo = mid + 1;
-            }
-
-        }
-
-        return lo;
-    }
-
-    // 내림차순 기준
-    public static int binarySearch(int[] arr, int value) {
-        int left = 0;
-        int right = arr.length - 1;
-
-        while(true) {
-            int mid = (left + right) / 2;
-            if(arr[mid] == value) {
-                return mid;
-            } else if(arr[mid] > value) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-
-            if(left > right) return -1;
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
-        int[] arr = new int[N];
+        int I = scan.nextInt();
+        int J = scan.nextInt();
 
-        for(int i = 0; i < N; i++) {
-            arr[i] = scan.nextInt();
+        List<Data> people = new ArrayList<>();
+
+
+        for(int i = 0; i < I; i++) {
+            int a = scan.nextInt();
+            int x = scan.nextInt();
+            people.add(new Data(x, a));
         }
 
-        Arrays.sort(arr);
+        people.sort(Comparator.comparingInt(o -> o.position));
 
-        int M = scan.nextInt();
+        int[] sum = new int[I];
 
-        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
-
-        for(int i = 0; i < M; i++) {
-            int value = scan.nextInt();
-
-            int counts = upperBound(arr, value) - lowerBound(arr, value);
-
-            output.write(String.valueOf(counts));
-            output.write(" ");
+        for(int i = 0; i < I; i++) {
+            Data data = people.get(i);
+            sum[i] = (i > 0 ? sum[i - 1] : 0) + data.position * data.times;
         }
 
-        output.flush();
+        System.out.println(Arrays.toString(sum));
     }
 }

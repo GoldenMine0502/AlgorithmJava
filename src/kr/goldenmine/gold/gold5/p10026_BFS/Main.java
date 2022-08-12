@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold5.p10026;
+package kr.goldenmine.gold.gold5.p10026_BFS;
 
 import java.util.Queue;
 import java.io.BufferedReader;
