@@ -1,9 +1,8 @@
-package kr.goldenmine.gold.gold5.p12865;
+package kr.goldenmine.temporary.p2293;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -64,32 +63,18 @@ public class Main {
     }
 
     public static void main(String[] args) {
-//        Scanner scan;
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
         int K = scan.nextInt();
 
-        int[] weights = new int[N + 1];
-        int[] values = new int[N + 1];
-        int[][] dp = new int[N + 1][K + 1];
-
-
-        for(int i = 1; i <= N; i++) {
-            weights[i] = scan.nextInt();
-            values[i] = scan.nextInt();
+        int[] arr = new int[N];
+        for(int i = 0; i < N; i++) {
+            arr[i] = scan.nextInt();
         }
 
-        for(int i = 1; i <= N; i++) {
-            for(int j = 1; j <= K; j++) {
-                if(weights[i] > j) {
-                    dp[i][j] = dp[i - 1][j];
-                } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - weights[i]] + values[i]);
-                }
-            }
-        }
-
-        System.out.println(dp[N][K]);
+//        int[] dp = new int[N];
+//        dp[0] = K / arr[0];
+//        dp[1] =
     }
 }

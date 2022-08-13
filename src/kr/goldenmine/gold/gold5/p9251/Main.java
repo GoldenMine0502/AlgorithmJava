@@ -63,29 +63,21 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        String a = scan.nextLine();
-        String b = scan.nextLine();
+        String a = scan.next();
+        String b = scan.next();
 
-        int bIndex = 0;
-        int count = 0;
+        int[][] dp = new int[a.length() + 1][b.length() + 1];
 
-        int maxCount = 0;
-
-        for(int i = 0; i < a.length(); i++) {
-            char ch = a.charAt(i);
-            bIndex = 0;
-            count = 0;
-            while(bIndex++ < b.length()) {
-                while (bIndex < b.length() && b.charAt(bIndex++) != ch) {
-
-                }
-                if (bIndex < b.length()) {
-                    count++;
+        for(int i = 1; i <= a.length(); i++) {
+            for(int j = 1; j <= b.length(); j++) {
+                if(a.charAt(i - 1) == b.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j]);
                 }
             }
-            System.out.println(count);
         }
 
-        System.out.println(maxCount);
+        System.out.println(dp[a.length()][b.length()]);
     }
 }

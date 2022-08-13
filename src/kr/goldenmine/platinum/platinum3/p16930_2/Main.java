@@ -104,64 +104,6 @@ public class Main {
             new Point(0, 1), // 아래
     };
 
-    static Queue<Point> points = new LinkedList<>();
-
-//    public static int bfs(int X, int Y, char[][] arr, int[][] visited, Point start, Point finish, int K) {
-//        Queue<Point> nexts = new LinkedList<>();
-//
-//        visited[start.y][start.x] = 0;
-//
-//        int min = -1;
-//
-//        while (!points.isEmpty()) {
-//            Point p = points.poll();
-//
-////            visited[p.y][p.x][p.lastDirection] = true;
-//
-////            System.out.println(p);
-//
-//            if(p.x == finish.x && p.y == finish.y) {
-//                if(min == -1) {
-//                    min = p.times;
-//                } else {
-//                    min = Math.min(p.times, min);
-//                }
-//            }
-//
-//            if(visited[p.y][p.x][p.lastDirection] == p.times) {
-//                for (int i = 0; i < 4; i++) {
-//                    int reversed = (i + 2) % 4;
-//
-//                    boolean isSameDirection = p.lastDirection == i && p.tempK < K;
-//                    int tempK = isSameDirection ? p.tempK + 1 : 1;
-//                    int times = isSameDirection ? p.times : p.times + 1;
-//
-//                    Point next = p.add(directions[i], i, times, tempK);
-//
-//                    if (next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {
-////                    if (isQueueAdd.test(next)) {
-//                        if (arr[next.y][next.x] == '.') {
-////                            System.out.println("next: " + next + ", " + visited[next.y][next.x][i]);
-//                            if (visited[next.y][next.x][i] == 0 || times < visited[next.y][next.x][i]) {
-//                                visited[next.y][next.x][i] = times;
-//                                visited[p.y][p.x][reversed] = times;
-//                                if (isSameDirection) {
-//                                    points.add(next);
-//                                } else {
-//                                    nexts.add(next);
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        points = nexts;
-//
-//        return min;
-//    }
-
     // 한 정점에서 몇칸까지 가는지 미리 체크하기?
     /*
     왜냐하면 DFS를 사용할 경우에는,
@@ -193,36 +135,8 @@ public class Main {
         Point start = new Point(startX, startY);
         Point finish = new Point(finishX, finishY);
 
-//        System.out.println(start);
-//        System.out.println(finish);
-
         int[][] visited = new int[Y][X];
 
-//        int times = 0;
-        points.add(start);
-        while(true) {
-//            int result = bfs(X, Y, arr, visited, start, finish, K);
-////            System.out.println(result);
-////            for(int i = 0; i < 4; i++) {
-////                for(int y = 0; y < Y; y++) {
-////                    for(int x = 0; x < X; x++) {
-////                        System.out.print(visited[y][x][i] + " ");
-////                    }
-////                    System.out.println();
-////                }
-////                System.out.println();
-////            }
-//
-//            if(result != -1) {
-//                System.out.println(result);
-//
-//                return;
-//            }
-//
-//            if(points.isEmpty()) {
-//                break;
-//            }
-        }
-//        System.out.println(-1);
+
     }
 }

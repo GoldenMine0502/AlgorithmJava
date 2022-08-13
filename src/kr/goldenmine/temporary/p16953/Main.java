@@ -1,9 +1,10 @@
-package kr.goldenmine.gold.gold5.p12865;
+package kr.goldenmine.temporary.p16953;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -63,33 +64,62 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
-//        Scanner scan;
-        FastReader scan = new FastReader();
+    static class Node {
+        long number;
+        int count;
 
-        int N = scan.nextInt();
-        int K = scan.nextInt();
-
-        int[] weights = new int[N + 1];
-        int[] values = new int[N + 1];
-        int[][] dp = new int[N + 1][K + 1];
-
-
-        for(int i = 1; i <= N; i++) {
-            weights[i] = scan.nextInt();
-            values[i] = scan.nextInt();
+        public Node(long number, int count) {
+            this.number = number;
+            this.count = count;
         }
 
-        for(int i = 1; i <= N; i++) {
-            for(int j = 1; j <= K; j++) {
-                if(weights[i] > j) {
-                    dp[i][j] = dp[i - 1][j];
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "number=" + number +
+                    ", count=" + count +
+                    '}';
+        }
+    }
+
+    public static int BFS(int A, int B) {
+        Queue<Node> numbers = new LinkedList<>();
+
+        numbers.add(new Node(A, 1));
+
+        int minimum = -1;
+
+        while(!numbers.isEmpty()) {
+            Node number = numbers.poll();
+
+//            System.out.println(number);
+
+            if(number.number == B) {
+                if(minimum == -1) {
+                    minimum = number.count;
                 } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - weights[i]] + values[i]);
+                    minimum = Math.min(minimum, number.count);
                 }
             }
+
+            long nextValue1 = number.number * 10 + 1;
+            long nextValue2 = number.number * 2;
+
+            if(nextValue1 <= B) numbers.add(new Node(nextValue1, number.count + 1));
+            if(nextValue2 <= B) numbers.add(new Node(nextValue2, number.count + 1));
         }
 
-        System.out.println(dp[N][K]);
+        return minimum;
+    }
+
+    public static void main(String[] args) {
+        FastReader scan = new FastReader();
+
+        int A = scan.nextInt();
+        int B = scan.nextInt();
+
+        int result = BFS(A, B);
+
+        System.out.println(result);
     }
 }

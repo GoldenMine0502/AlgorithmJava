@@ -1,9 +1,8 @@
-package kr.goldenmine.platinum.platinum3.p16930;
+package kr.goldenmine.platinum.platinum3.p16930F;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -88,6 +87,10 @@ public class Main {
             return new Point(x + p.x, y + p.y, lastDirection, times, tempK);
         }
 
+        public Point mul(int values) {
+            return new Point(x * values, y * values);
+        }
+
         @Override
         public String toString() {
             return "Point{" +
@@ -109,54 +112,41 @@ public class Main {
 
     static Queue<Point> points = new LinkedList<>();
 
-    public static int bfs(int X, int Y, char[][] arr, boolean[][] visited, Point start, Point finish, int K) {
-        Queue<Point> nexts = new LinkedList<>();
-
-        visited[start.y][start.x] = true;
+    public static int bfs(int X, int Y, char[][] arr, int[][] visited, Point start, Point finish, int K) {
+        visited[start.y][start.x] = 1;
 
         int min = -1;
 
         while (!points.isEmpty()) {
             Point p = points.poll();
 
-            visited[p.y][p.x] = true;
-
-            System.out.println(p);
-
-            if(p.x == finish.x && p.y == finish.y) {
-                if(min == -1) {
-                    min = p.times;
-                } else {
-                    min = Math.min(p.times, min);
-                }
-            }
-
             for (int i = 0; i < 4; i++) {
-                boolean isSameDirection = p.lastDirection == i && p.tempK < K;
-                int tempK = isSameDirection ? p.tempK + 1 : 1;
-                int times = isSameDirection ? p.times : p.times + 1;
+                for (int j = 1; j <= K; j++) {
+                    Point next = p.add(directions[i].mul(j), i, p.times + 1, j);
 
-                Point next = p.add(directions[i], i, times, tempK);
-
-                if (next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {
-//                    if (isQueueAdd.test(next)) {
-                    if(arr[next.y][next.x] == '.') {
-                        if (!visited[next.y][next.x] || isSameDirection) {
-                            if(isSameDirection) {
-                                visited[next.y][next.x] = true;
-                                points.add(next);
+                    if (next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {
+                        if (arr[next.y][next.x] == '.') {
+                            if (p.x == finish.x && p.y == finish.y) {
+                                if (min == -1) {
+                                    min = p.times;
+                                } else {
+                                    min = Math.min(p.times, min);
+                                }
                             } else {
-                                if(!visited[next.y][next.x])
-                                    nexts.add(next);
+                                if (visited[next.y][next.x] == 0) {
+                                    visited[next.y][next.x] = visited[p.y][p.x] + 1;
+                                    points.add(next);
+                                } else if(visited[next.y][next.x] <= visited[p.y][p.x]){
+                                    break;
+                                }
                             }
+                        } else {
+                            break;
                         }
                     }
-//                    }
                 }
             }
         }
-
-        points = nexts;
 
         return min;
     }
@@ -169,9 +159,9 @@ public class Main {
         int K = scan.nextInt();
 
         char[][] arr = new char[Y][X];
-        for(int y = 0; y < Y; y++) {
+        for (int y = 0; y < Y; y++) {
             String line = scan.next();
-            for(int x = 0; x < X; x++) {
+            for (int x = 0; x < X; x++) {
                 arr[y][x] = line.charAt(x);
             }
         }
@@ -187,21 +177,21 @@ public class Main {
 //        System.out.println(start);
 //        System.out.println(finish);
 
-        boolean[][] visited = new boolean[Y][X];
+        int[][] visited = new int[Y][X];
 
 //        int times = 0;
         points.add(start);
-        while(true) {
+        while (true) {
             int result = bfs(X, Y, arr, visited, start, finish, K);
 //            System.out.println(result);
 //            times++;
 
-            if(result != -1) {
+            if (result != -1) {
                 System.out.println(result);
                 return;
             }
 
-            if(points.isEmpty()) {
+            if (points.isEmpty()) {
                 break;
             }
         }
