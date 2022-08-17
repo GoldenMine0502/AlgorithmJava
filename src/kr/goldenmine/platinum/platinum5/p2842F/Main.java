@@ -1,10 +1,9 @@
-package kr.goldenmine.platinum.platinum5.p2842;
+package kr.goldenmine.platinum.platinum5.p2842F;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.function.Predicate;
 
 public class Main {
     static class FastReader {
@@ -66,22 +65,22 @@ public class Main {
     static class Point {
         int x;
         int y;
-        int minimum = 9999999;
-        int maximum = -9999999;
+        int minus = 9999999;
+        int plus = -9999999;
 
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
         }
 
-        public Point(int x, int y, int minimum, int maximum) {
+        public Point(int x, int y, int minus, int plus) {
             this(x, y);
-            this.minimum = minimum;
-            this.maximum = maximum;
+            this.minus = minus;
+            this.plus = plus;
         }
 
         public Point add(Point p) {
-            return new Point(x + p.x, y + p.y, minimum, maximum);
+            return new Point(x + p.x, y + p.y, minus, plus);
         }
 
         @Override
@@ -89,8 +88,8 @@ public class Main {
             return "Point{" +
                     "x=" + x +
                     ", y=" + y +
-                    ", minimum=" + minimum +
-                    ", maximum=" + maximum +
+                    ", minimum=" + minus +
+                    ", maximum=" + plus +
                     '}';
         }
     }
@@ -106,17 +105,36 @@ public class Main {
             new Point(1, 1),
     };
 
-    public static final int MAX_VALUE = 9999999;
-    public static final int MIN_VALUE = -1;
+    static class Difference {
+        int minus;
+        int plus;
 
-    public static void bfs(int X, int Y, int[][] arr, int[][] minimumDifferences, Point start) {
+        public Difference(int minus, int plus) {
+            this.minus = minus;
+            this.plus = plus;
+        }
+
+        @Override
+        public String toString() {
+            return "Difference{" +
+                    "minus=" + minus +
+                    ", plus=" + plus +
+                    '}';
+        }
+    }
+
+    public static final int MAX_VALUE = 9999999;
+    public static final int MIN_VALUE = -9999999;
+
+    public static void bfs(int X, int Y, int[][] arr, Difference[][][] differences, Point start) {
         Queue<Point> points = new LinkedList<>();
 
-        start.maximum = arr[start.y][start.x];
-        start.minimum = arr[start.y][start.x];
+        start.plus = 0;
+        start.minus = 0;
         points.add(start);
 
-        minimumDifferences[start.y][start.x] = 0;
+        for(int i = 0; i < 8; i++)
+            differences[start.y][start.x][i] = new Difference(0, 0);
 
         while (!points.isEmpty()) {
             Point p = points.poll();
@@ -125,17 +143,29 @@ public class Main {
             for (int i = 0; i < directions.length; i++) {
                 Point next = p.add(directions[i]);
                 if (next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {
-                    next.maximum = Math.max(next.maximum, arr[next.y][next.x]);
-                    next.minimum = Math.min(next.minimum, arr[next.y][next.x]);
+                    next.plus = Math.max(next.plus, arr[next.y][next.x] - arr[start.y][start.x]);
+                    next.minus = Math.min(next.minus, arr[next.y][next.x] - arr[start.y][start.x]);
 
-                    int difference = next.maximum - next.minimum;
+//                    System.out.println(p + ", " + next + ", " + arr[next.y][next.x] + ", " + difference + ", " + minimumDifferences[next.y][next.x]);
 
-                    System.out.println(p + ", " + next + ", " + arr[next.y][next.x] + ", " + difference + ", " + minimumDifferences[next.y][next.x]);
+                    if (differences[next.y][next.x] == null || (next.plus < differences[next.y][next.x][i].plus || next.minus > differences[next.y][next.x][i].minus)) {
+//                        int min = Math.max(differences[next.y][next.x] != null ? differences[next.y][next.x].minus : MIN_VALUE, next.minus);
+//                        int max = Math.min(differences[next.y][next.x] != null ? differences[next.y][next.x].plus : MAX_VALUE, next.plus);
 
-                    if (difference < minimumDifferences[next.y][next.x]) {
-                        minimumDifferences[next.y][next.x] = difference;
+//                        differences[next.y][next.x] = new Difference(next.minus, next.plus);
                         points.add(next);
                     }
+//                    else if (next.plus < differences[next.y][next.x].plus) {
+//                        int max = Math.min(differences[next.y][next.x] != null ? differences[next.y][next.x].plus : MAX_VALUE, next.plus);
+//
+//                        differences[next.y][next.x] = new Difference(differences[next.y][next.x].minus, max);
+//                        points.add(next);
+//                    } else if (next.minus > differences[next.y][next.x].minus) {
+//                        int min = Math.max(differences[next.y][next.x] != null ? differences[next.y][next.x].minus : MIN_VALUE, next.minus);
+//
+//                        differences[next.y][next.x] = new Difference(min, differences[next.y][next.x].plus);
+//                        points.add(next);
+//                    }
                 }
             }
         }
@@ -159,19 +189,19 @@ public class Main {
             for (int x = 0; x < N; x++) {
                 arr[y][x] = line.charAt(x);
 
-                if(arr[y][x] == 'P') {
+                if (arr[y][x] == 'P') {
                     startX = x;
                     startY = y;
                     Ks.add(new Point(startX, startY));
                 }
-                if(arr[y][x] == 'K') {
+                if (arr[y][x] == 'K') {
                     Ks.add(new Point(x, y));
                 }
             }
         }
 
-        for(int y = 0; y < N; y++) {
-            for(int x = 0; x < N; x++) {
+        for (int y = 0; y < N; y++) {
+            for (int x = 0; x < N; x++) {
                 arr2[y][x] = scan.nextInt();
             }
         }
@@ -179,16 +209,11 @@ public class Main {
 //        System.out.println(startX + ", " + startY);
 
         // visited에는 P에서 해당 값까지 필요한 높이 절댓값을 저장한다.
-        int[][] visited = new int[N][N];
-        for(int y = 0; y < N; y++) {
-            for(int x = 0; x < N; x++) {
-                visited[y][x] = MAX_VALUE;
-            }
-        }
+        Difference[][] visited = new Difference[N][N];
 
         Point start = new Point(startX, startY);
 
-        bfs(N, N, arr2, visited, start);
+//        bfs(N, N, arr2, visited, start);
 
 //        for(int y = 0; y < N; y++) {
 //            for(int x = 0; x < N; x++) {
@@ -197,27 +222,36 @@ public class Main {
 //            System.out.println();
 //        }
 //
-        for(int y = 0; y < N; y++) {
-            for(int x = 0; x < N; x++) {
+        for (int y = 0; y < N; y++) {
+            for (int x = 0; x < N; x++) {
                 System.out.print(visited[y][x] + " ");
             }
             System.out.println();
         }
 
-        int min = 0;
-        int max = 0;
+        int min = MAX_VALUE;
+        int max = MIN_VALUE;
 
-        for(int i = 0; i < Ks.size(); i++) {
+        for (int i = 0; i < Ks.size(); i++) {
             Point k = Ks.get(i);
-            int difference = arr2[k.y][k.x] - arr2[startY][startX];
+//            int difference = arr2[k.y][k.x] - arr2[startY][startX];
 //            System.out.println(k + ", " + difference);
 
-            if(difference >= 0) {
-                max = Math.max(max, visited[k.y][k.x]);
-            } else {
-                min = Math.min(min, -visited[k.y][k.x]);
-            }
+            max = Math.max(max, visited[k.y][k.x].plus);
+            min = Math.min(min, visited[k.y][k.x].minus);
         }
+
+        /*
+4
+P..K
+....
+....
+K..K
+3 3 15 9
+9 2 15 3
+8 3 12 4
+3 9 15 5
+         */
 
 //        System.out.println(min + ", " + max);
 

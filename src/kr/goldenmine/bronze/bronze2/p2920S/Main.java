@@ -1,3 +1,5 @@
+package kr.goldenmine.bronze.bronze2.p2920S;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,8 +65,24 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
+        int[] arr = new int[8];
+
+        int ascending = 0;
+        int descending = 0;
+        for(int i = 0; i < 8; i++) {
+            arr[i] = scan.nextInt();
+            if(i > 0) {
+                if(arr[i] - arr[i - 1] > 0) ascending++;
+                if(arr[i] - arr[i - 1] < 0) descending++;
+            }
+        }
+
+        if(ascending == 7) {
+            System.out.println("ascending");
+        } else if(descending == 7) {
+            System.out.println("descending");
+        } else {
+            System.out.println("mixed");
+        }
     }
 }
-
-

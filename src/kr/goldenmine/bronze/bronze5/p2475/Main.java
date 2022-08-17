@@ -1,3 +1,5 @@
+package kr.goldenmine.bronze.bronze5.p2475;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -63,8 +65,14 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
+        int sum = 0;
+
+        int[] arr = new int[5];
+        for(int i = 0; i < 5; i++) {
+            arr[i] = scan.nextInt();
+            sum += arr[i] * arr[i];
+        }
+
+        System.out.println(sum % 10);
     }
 }
-
-

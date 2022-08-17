@@ -1,6 +1,10 @@
+package kr.goldenmine.platinum.platinum5.p4354S;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -60,11 +64,66 @@ public class Main {
         }
     }
 
+    public static int[] getPi(String key) {
+        int[] pi = new int[key.length()];
+        pi[0] = 0;
+
+        int j = 0;
+
+        for(int i = 1; i < key.length(); i++) {
+            while(j > 0 && key.charAt(i) != key.charAt(j))
+                j = pi[j - 1];
+
+            if(key.charAt(i) == key.charAt(j)) {
+                pi[i] = ++j;
+            }
+        }
+
+        return pi;
+    }
+
+    public static List<Integer> kmp(String text, String key) {
+        List<Integer> indices = new ArrayList<>();
+
+        int[] pi = getPi(key);
+
+        int j = 0;
+
+        for(int i = 0; i < text.length(); i++) {
+            while(j > 0 && text.charAt(i) != key.charAt(j))
+                j = pi[j - 1];
+
+            if(text.charAt(i) == key.charAt(j)) {
+                if(j == key.length() - 1) {
+                    indices.add(i - key.length() + 1);
+                    j = pi[j];
+                } else {
+                    j++;
+                }
+            }
+        }
+
+        return indices;
+    }
+
+    // 반레: aabaaaabaaaaabaaaabaa
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
+
+        String text;
+        while(!(text = scan.nextLine()).equals(".")) {
+            int[] pi = getPi(text);
+
+//            System.out.println(Arrays.toString(pi));
+
+            int len = (text.length() - pi[text.length() - 1]);
+            if(text.length() % len == 0) {
+                System.out.println(text.length() / len);
+            } else {
+                System.out.println(1);
+            }
+        }
+
     }
 }
-
-
