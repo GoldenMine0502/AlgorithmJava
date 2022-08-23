@@ -1,9 +1,10 @@
-package kr.goldenmine.gold.gold5.p12865;
+package kr.goldenmine.gold.gold2.p1167;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -63,33 +64,43 @@ public class Main {
         }
     }
 
+    static class Node {// 다음 노드의 인덱스와, 그 노드로 가는데 필요한 비용을 담고 있다.
+        int idx, cost;
+
+        Node(int idx, int cost) {
+            this.idx = idx;
+            this.cost = cost;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "idx=" + idx +
+                    ", cost=" + cost +
+                    '}';
+        }
+    }
+
     public static void main(String[] args) {
-//        Scanner scan;
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
-        int K = scan.nextInt();
 
-        int[] weights = new int[N + 1];
-        int[] values = new int[N + 1];
-        int[][] dp = new int[N + 1][K + 1];
-
+        List<List<Integer>> nodes = new ArrayList<>();
 
         for(int i = 1; i <= N; i++) {
-            weights[i] = scan.nextInt();
-            values[i] = scan.nextInt();
+            nodes.add(new ArrayList<>());
         }
 
-        for(int i = 1; i <= N; i++) {
-            for(int j = 1; j <= K; j++) {
-                if(weights[i] > j) {
-                    dp[i][j] = dp[i - 1][j];
-                } else {
-                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - weights[i]] + values[i]);
-                }
-            }
-        }
+//        for(int i = 1; i <= N; i++) {
+//            int start =
+//        }
 
-        System.out.println(dp[N][K]);
+        /*
+
+        2
+        0 3 4 9
+
+         */
     }
 }

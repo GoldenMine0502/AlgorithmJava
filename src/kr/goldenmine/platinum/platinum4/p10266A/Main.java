@@ -1,9 +1,10 @@
-package kr.goldenmine.platinum.platinum5.p14003;
+package kr.goldenmine.platinum.platinum4.p10266A;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -63,55 +64,78 @@ public class Main {
         }
     }
 
-    public static int binarySearch(int[] arr, int size, int value) {
-        int left = 0;
-        int right = size;
+    public static int[] getPi(int[] key) {
+        int[] pi = new int[key.length];
+        pi[0] = 0;
 
-        while(left < right) {
-            int mid = (left + right) / 2;
+        int j = 0;
 
-            int arrValue = arr[mid];
+        for(int i = 1; i < key.length; i++) {
+            while(j > 0 && key[i] != key[j])
+                j = pi[j - 1];
 
-            if(arrValue >= value) {
-                right = mid;
-            } else {
-                left = mid + 1;
+            if(key[i] == key[j]) {
+                pi[i] = ++j;
             }
         }
 
-        return left;
+        return pi;
     }
 
-    //https://www.acmicpc.net/problem/12015
+    public static List<Integer> kmp(int[] text, int[] key) {
+        List<Integer> indices = new ArrayList<>();
+
+        int[] pi = getPi(key);
+
+        int j = 0;
+
+        for(int i = 0; i < text.length; i++) {
+            while(j > 0 && text[i] != key[j])
+                j = pi[j - 1];
+
+            if(text[i] == key[j]) {
+                if(j == key.length - 1) {
+                    indices.add(i - key.length + 1);
+                    j = pi[j];
+                } else {
+                    j++;
+                }
+            }
+        }
+
+        return indices;
+    }
+
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
+        final int SIZE = 360000;
         int N = scan.nextInt();
-        int[] arr = new int[N];
+
+        int[] arr = new int[SIZE * 2];
+        int[] arr2 = new int[SIZE];
+
+//        Set<Integer> diffs = new ArrayList<>();
 
         for(int i = 0; i < N; i++) {
-            arr[i] = scan.nextInt();
+            int input = scan.nextInt();
+            arr[input] = 1;
+            arr[input + SIZE] = 1;
         }
-
-        int[] LIS = new int[N]; // 일단 마지막 인덱스가 가장 큰값이긴 하겠지.
-        int size = 0;
 
         for(int i = 0; i < N; i++) {
-            int value = arr[i];
-            int last = size > 0 ? LIS[size - 1] : Integer.MIN_VALUE;
-
-            if(value > last) { // 추가
-                LIS[size++] = value;
-            } else { // 대치
-                int index = binarySearch(LIS, size, value);
-                LIS[index] = value;
-            }
+            int input = scan.nextInt();
+            arr2[input] = 1;
         }
+        // 0에서 넘어가는 부분 처리를 잘 해야함...
 
-//        System.out.println(Arrays.toString(LIS));
-        System.out.println(size);
-//        for(int i = 0; i < size; i++) {
-//            System.out.print(LIS[i] + " ");
-//        }
+        List<Integer> indices = kmp(arr, arr2);
+
+        System.out.println(indices.size() > 0 ? "possible" : "impossible");
+//        Arrays.sort(arr);
+//        Arrays.sort(arr2);
+//
+//        System.out.println(Arrays.toString(arr));
+//        System.out.println(Arrays.toString(arr2));
     }
 }

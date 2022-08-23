@@ -3,9 +3,7 @@ package kr.goldenmine.platinum.platinum5.p2842_2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static class FastReader {
@@ -100,9 +98,12 @@ public class Main {
         int minus;
         int plus;
 
-        public Difference(int minus, int plus) {
+        Point last;
+
+        public Difference(int minus, int plus, Point last) {
             this.minus = minus;
             this.plus = plus;
+            this.last = last;
         }
 
         @Override
@@ -113,6 +114,11 @@ public class Main {
                     '}';
         }
     }
+
+    /*
+    netlify
+    recoli
+     */
 
         static Point[] directions = new Point[]{
             new Point(-1, -1),
@@ -125,33 +131,91 @@ public class Main {
             new Point(1, 1),
     };
 
-    public static void dfs(int X, int Y, int[][] arr, Difference[][] differences, Point start, Point point) {
-        for(int i = 0; i < directions.length; i++) {
-            Point next = point.add(directions[i]);
+    public static final int MAX_VALUE = 9999999;
+    public static final int MIN_VALUE = -9999999;
 
+    public static void bfs(int X, int Y, int[][] arr, Difference[][] differences, Point start) {
+        Queue<Point> points = new LinkedList<>();
 
-            if(next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {
+        start.plus = 0;
+        start.minus = 0;
+        points.add(start);
 
-                next.plus = Math.max(next.plus, arr[next.y][next.x] - arr[start.y][start.x]);
-                next.minus = Math.min(next.minus, arr[next.y][next.x] - arr[start.y][start.x]);
+        while (!points.isEmpty()) {
+            Point p = points.poll();
+            System.out.println(p);
 
-                if (differences[next.y][next.x] == null) {
-                    differences[next.y][next.x] = new Difference(next.minus, next.plus);
-//                    System.out.println(next);
-                    dfs(X, Y, arr, differences, start, next);
-                } else if (next.plus < differences[next.y][next.x].plus) {
-                    differences[next.y][next.x] = new Difference(Math.max(differences[next.y][next.x].minus, next.minus), Math.min(differences[next.y][next.x].plus, next.plus));
-//                    System.out.println(next);
-                    dfs(X, Y, arr, differences, start, next);
-                } else if (next.minus > differences[next.y][next.x].minus) {
-                    differences[next.y][next.x] = new Difference(Math.max(differences[next.y][next.x].minus, next.minus), Math.min(differences[next.y][next.x].plus, next.plus));
-//                    System.out.println(next);
-                    dfs(X, Y, arr, differences, start, next);
+            for (int i = 0; i < directions.length; i++) {
+                Point next = p.add(directions[i]);
+                if (next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {
+                    next.plus = Math.max(next.plus, arr[next.y][next.x] - arr[start.y][start.x]);
+                    next.minus = Math.min(next.minus, arr[next.y][next.x] - arr[start.y][start.x]);
+
+//                    System.out.println(p + ", " + next + ", " + arr[next.y][next.x] + ", " + difference + ", " + minimumDifferences[next.y][next.x]);
+
+                    if (differences[next.y][next.x] == null) {
+                        differences[next.y][next.x] = new Difference(next.minus, next.plus, p);
+                        points.add(next);
+                    } else {
+                        int diff = differences[next.y][next.x].plus - differences[next.y][next.x].minus;
+                        int nextDiff = next.plus - next.minus;
+
+                        if(nextDiff < diff) {
+                            differences[next.y][next.x] = new Difference(next.minus, next.plus, p);
+                            points.add(next);
+                        }
+                    }
+//                    else if (next.plus < differences[next.y][next.x].plus) {
+//                        int max = Math.min(differences[next.y][next.x] != null ? differences[next.y][next.x].plus : MAX_VALUE, next.plus);
+//
+//                        differences[next.y][next.x] = new Difference(differences[next.y][next.x].minus, max);
+//                        points.add(next);
+//                    } else if (next.minus > differences[next.y][next.x].minus) {
+//                        int min = Math.max(differences[next.y][next.x] != null ? differences[next.y][next.x].minus : MIN_VALUE, next.minus);
+//
+//                        differences[next.y][next.x] = new Difference(min, differences[next.y][next.x].plus);
+//                        points.add(next);
+//                    }
                 }
             }
         }
     }
 
+    public static void dfs(int X, int Y, int[][] arr, Difference[][] differences, Point start, Point point) {
+        for(int i = 0; i < directions.length; i++) {
+            Point next = point.add(directions[i]);
+
+            if(next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {
+                next.plus = Math.max(next.plus, arr[next.y][next.x] - arr[start.y][start.x]);
+                next.minus = Math.min(next.minus, arr[next.y][next.x] - arr[start.y][start.x]);
+
+                if (differences[next.y][next.x] == null) {
+                    differences[next.y][next.x] = new Difference(next.minus, next.plus, point);
+//                    System.out.println(next);
+                    dfs(X, Y, arr, differences, start, next);
+                } else {
+                    int diff = differences[next.y][next.x].plus - differences[next.y][next.x].minus;
+                    int currentDiff = next.plus - next.minus;
+
+                    if(currentDiff < diff) {
+                        differences[next.y][next.x] = new Difference(next.minus, next.plus, point);
+                        dfs(X, Y, arr, differences, start, next);
+                    }
+                }
+//                else if (next.plus < differences[next.y][next.x].plus) {
+//                    differences[next.y][next.x] = new Difference(Math.max(differences[next.y][next.x].minus, next.minus), Math.min(differences[next.y][next.x].plus, next.plus));
+////                    System.out.println(next);
+//                    dfs(X, Y, arr, differences, start, next);
+//                } else if (next.minus > differences[next.y][next.x].minus) {
+//                    differences[next.y][next.x] = new Difference(Math.max(differences[next.y][next.x].minus, next.minus), Math.min(differences[next.y][next.x].plus, next.plus));
+////                    System.out.println(next);
+//                    dfs(X, Y, arr, differences, start, next);
+//                }
+            }
+        }
+    }
+
+    // 이거 최단거리 역추적 문제임...
     public static void main(String[] args) {
                 FastReader scan = new FastReader();
 
@@ -173,7 +237,7 @@ public class Main {
                 if (types[y][x] == 'P') {
                     startX = x;
                     startY = y;
-                    Ks.add(new Point(x, y));
+//                    Ks.add(new Point(x, y));
                 }
                 if (types[y][x] == 'K') {
                     Ks.add(new Point(x, y));
@@ -188,29 +252,91 @@ public class Main {
         }
 
         Difference[][] diffs = new Difference[N][N];
-        diffs[startY][startX] = new Difference(0, 0);
+        diffs[startY][startX] = new Difference(0, 0, new Point(startX, startY));
 
-        dfs(N, N, values, diffs, new Point(startX, startY), new Point(startX, startY));
+        bfs(N, N, values, diffs, new Point(startX, startY));
 
-//        for (int y = 0; y < N; y++) {
-//            for (int x = 0; x < N; x++) {
-//                System.out.print(diffs[y][x] + " ");
-//            }
-//            System.out.println();
-//        }
+        for (int y = 0; y < N; y++) {
+            for (int x = 0; x < N; x++) {
+                System.out.print(diffs[y][x] + " ");
+            }
+            System.out.println();
+        }
+
+        List<Point> visitedPoints = new ArrayList<>();
+
+        for(int i = 0; i < Ks.size(); i++) {
+            Point last = Ks.get(i);
+
+            while(!(last.x == startX && last.y == startY)) {
+                visitedPoints.add(last);
+                last = diffs[last.y][last.x].last;
+            }
+        }
+
+        System.out.println(visitedPoints);
 
         int min = 9999999;
         int max = -1;
 
-        for (int i = 0; i < Ks.size(); i++) {
-            Point k = Ks.get(i);
+        for (int i = 0; i < visitedPoints.size(); i++) {
+            Point p = visitedPoints.get(i);
 //            int difference = arr2[k.y][k.x] - arr2[startY][startX];
 //            System.out.println(k + ", " + difference);
 
-            max = Math.max(max, diffs[k.y][k.x].plus);
-            min = Math.min(min, diffs[k.y][k.x].minus);
+            max = Math.max(max, values[p.y][p.x]);
+            min = Math.min(min, values[p.y][p.x]);
+            System.out.println(values[p.y][p.x]);
         }
 
         System.out.println(max - min);
     }
+    /*
+    반례
+
+4
+P..K
+....
+....
+K..K
+3 2 15 4
+7 4 15 2
+2 3 3 1
+3 4 15 6
+
+4
+P..K
+....
+....
+K..K
+3 2 15 2
+7 4 15 2
+2 3 5 1
+3 4 15 6
+
+4
+P..K
+....
+....
+K..K
+3 2 15 2
+7 4 15 2
+2 3 12 1
+3 4 15 6
+
+4
+P..K
+....
+....
+K..K
+3 2 15 2
+7 15 15 2
+2 15 10 1
+3 4 15 6
+....
+....
+....
+....
+
+     */
 }
