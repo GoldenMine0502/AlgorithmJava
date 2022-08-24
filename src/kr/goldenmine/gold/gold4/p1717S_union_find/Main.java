@@ -1,8 +1,6 @@
-package kr.goldenmine.gold.gold2.p1300A;
+package kr.goldenmine.gold.gold4.p1717S_union_find;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -62,61 +60,52 @@ public class Main {
         }
     }
 
-//    public static int binarySearch(int[] arr, int value) {
-//        int left = 0;
-//        int right = arr.length - 1;
-//
-//        while(true) {
-//            int mid = (left + right) / 2;
-//            if(arr[mid] == value) {
-//                return mid;
-//            } else if(arr[mid] > value) {
-//                right = mid - 1;
-//            } else {
-//                left = mid + 1;
-//            }
-//
-//            if(left > right) return -1;
-//        }
-//    }
-
-    public static long lowerBound(int N, int K) {
-        long lo = 1;
-        long hi = K;
-
-        // lo가 hi랑 같아질 때 까지 반복
-        while (lo < hi) {
-            long mid = (lo + hi) / 2; // 중간위치를 구한다.
-            long count = 0;
-
-            for(int i = 1; i <= N; i++) {
-                count += Math.min(mid / i, N);
-            }
-
-            /*
-             *  key 값이 중간 위치의 값보다 작거나 같을 경우
-             *
-             *  (중복 원소에 대해 왼쪽으로 탐색하도록 상계를 내린다.)
-             */
-            if (K <= count) {
-                hi = mid;
-            }
-
-            else {
-                lo = mid + 1;
-            }
-
-        }
-
-        return lo;
+    public static int find(int[] arr, int value) {
+        if(arr[value] == value)
+            return value;
+        return arr[value] = find(arr, arr[value]);
     }
 
-    public static void main(String[] args) {
+    public static void merge(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
+        if(x == y) return;
+        arr[y] = x;
+    }
+
+    public static boolean isUnion(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
+
+        return x == y;
+    }
+
+    public static void main(String[] args) throws IOException {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
-        int k = scan.nextInt();
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        System.out.println(lowerBound(N, k));
+        int N = scan.nextInt();
+        int M = scan.nextInt();
+
+        int[] arr = new int[N + 1];
+        for(int i = 1; i <= N; i++) {
+            arr[i] = i;
+        }
+
+        for(int i = 0; i < M; i++) {
+            int A = scan.nextInt();
+            int B = scan.nextInt();
+            int C = scan.nextInt();
+
+            if(A == 0) { // merge
+                merge(arr, B, C);
+            } else { // isUnion
+                writer.write(isUnion(arr, B, C) ? "YES" : "NO");
+                writer.newLine();
+            }
+        }
+
+        writer.close();
     }
 }

@@ -1,10 +1,9 @@
-package kr.goldenmine.gold.gold2.p1167;
+package kr.goldenmine.gold.gold4.p1976;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -64,51 +63,58 @@ public class Main {
         }
     }
 
-    static class Node {// 다음 노드의 인덱스와, 그 노드로 가는데 필요한 비용을 담고 있다.
-        int idx, cost;
+    public static int find(int[] arr, int value) {
+        if(arr[value] == value)
+            return value;
+        return arr[value] = find(arr, arr[value]);
+    }
 
-        Node(int idx, int cost) {
-            this.idx = idx;
-            this.cost = cost;
-        }
+    public static void merge(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
+        if(x == y) return;
+        arr[y] = x;
+    }
 
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "idx=" + idx +
-                    ", cost=" + cost +
-                    '}';
-        }
+    public static boolean isUnion(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
+
+        return x == y;
     }
 
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
+        int M = scan.nextInt();
 
-        List<List<Integer>> nodes = new ArrayList<>();
-
+        int[] arr = new int[N + 1];
         for(int i = 1; i <= N; i++) {
-            nodes.add(new ArrayList<>());
+            arr[i] = i;
         }
 
-
-        for(int i = 1; i <= N; i++) {
-
-            while(true) {
-                int start = scan.nextInt();
-                if(start == -1) break;
-                int finish = scan.nextInt();
-
-                nodes.get(start).add(finish);
+        for(int y = 1; y <= N; y++) {
+            for(int x = 1; x <= N; x++) {
+                int input = scan.nextInt();
+                if(input == 1) {
+                    merge(arr, x, y);
+                }
+//                System.out.println(input);
             }
         }
 
-        /*
-
-        2
-        0 3 4 9
-
-         */
+        int first = scan.nextInt();
+        int i = 0;
+        while(i < M - 1) {
+            boolean union = isUnion(arr, first, scan.nextInt());
+//            System.out.println(union + ", " + i + ", " + M);
+            if(!union) {
+                break;
+            }
+            i++;
+        }
+//        System.out.println(M + ", " + first + ", " + Arrays.toString(arr));
+        System.out.println(i == M - 1 ? "YES" : "NO");
     }
 }

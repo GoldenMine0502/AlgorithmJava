@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold2.p1655_priority_queue_mid;
+package kr.goldenmine.gold.gold2.p1655S_priority_queue_mid;
 
 import java.io.BufferedReader;
 import java.io.IOException;

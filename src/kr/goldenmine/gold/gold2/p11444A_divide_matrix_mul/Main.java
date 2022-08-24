@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold2.p11444A;
+package kr.goldenmine.gold.gold2.p11444A_divide_matrix_mul;
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold2.p1938;
+package kr.goldenmine.gold.gold2.p1938S_bfs_wood_log;
 
 import java.io.BufferedReader;
 import java.io.IOException;

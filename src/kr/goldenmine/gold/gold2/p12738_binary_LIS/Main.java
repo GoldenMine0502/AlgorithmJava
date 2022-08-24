@@ -1,10 +1,8 @@
-package kr.goldenmine.gold.gold2.p1167;
-
+package kr.goldenmine.gold.gold2.p12738_binary_LIS;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -64,51 +62,58 @@ public class Main {
         }
     }
 
-    static class Node {// 다음 노드의 인덱스와, 그 노드로 가는데 필요한 비용을 담고 있다.
-        int idx, cost;
+    public static int binarySearch(int[] arr, int size, int value) {
+        int left = 0;
+        int right = size;
 
-        Node(int idx, int cost) {
-            this.idx = idx;
-            this.cost = cost;
+        while(left < right) {
+            int mid = (left + right) / 2;
+
+            int arrValue = arr[mid];
+
+            if(arrValue >= value) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
         }
 
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "idx=" + idx +
-                    ", cost=" + cost +
-                    '}';
-        }
+        return left;
     }
 
+    //https://www.acmicpc.net/problem/12015
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
+        int[] arr = new int[N];
 
-        List<List<Integer>> nodes = new ArrayList<>();
-
-        for(int i = 1; i <= N; i++) {
-            nodes.add(new ArrayList<>());
+        for(int i = 0; i < N; i++) {
+            arr[i] = scan.nextInt();
         }
 
+        int[] LIS = new int[N]; // 일단 마지막 인덱스가 가장 큰값이긴 하겠지.
+        int size = 0;
 
-        for(int i = 1; i <= N; i++) {
+        for(int i = 0; i < N; i++) {
+            int value = arr[i];
+            int last = size > 0 ? LIS[size - 1] : Integer.MIN_VALUE;
 
-            while(true) {
-                int start = scan.nextInt();
-                if(start == -1) break;
-                int finish = scan.nextInt();
-
-                nodes.get(start).add(finish);
+            if(value > last) { // 추가
+                LIS[size++] = value;
+            } else { // 대치
+                int index = binarySearch(LIS, size, value);
+                LIS[index] = value;
             }
+//            else { // 그냥 아무것도 하지말고 스킵하면 될듯?
+//
+//            }
         }
 
-        /*
-
-        2
-        0 3 4 9
-
-         */
+        System.out.println(Arrays.toString(LIS));
+        System.out.println(size);
+//        for(int i = 0; i < size; i++) {
+//            System.out.print(LIS[i] + " ");
+//        }
     }
 }

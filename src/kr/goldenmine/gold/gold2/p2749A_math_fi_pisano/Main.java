@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold2.p2749A;
+package kr.goldenmine.gold.gold2.p2749A_math_fi_pisano;
 
 import java.util.Scanner;
 
