@@ -1,9 +1,10 @@
-package kr.goldenmine.platinum.platinum4.p13506F;
+package kr.goldenmine.platinum.platinum4.p3779;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -109,37 +110,29 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        String str = scan.next();
-        int[] fail = getFailure(str);
+        int t = 1;
+        while(true) {
+            int N = scan.nextInt();
+            if(N == 0) break;
 
-        int max = fail[fail.length - 1];
+            String key = scan.next();
 
-        int zeroCount = 0;
-        for(int i = 0; i < fail.length; i++) {
-            if(fail[i] != 0) break;
-            zeroCount++;
-        }
+            int[] pi = new int[key.length()];
+            pi[0] = 0;
 
-        int firstLen = Math.min(zeroCount, max);
-        int maxMiddle = 0;
-        for(int i = fail.length - 1 - firstLen; i >= 0; i--) {
+            int j = 0;
 
-            maxMiddle = Math.max(maxMiddle, fail[i]);
-        }
+            for(int i = 1; i < key.length(); i++) {
+                while(j > 0 && key.charAt(i) != key.charAt(j))
+                    j = pi[j - 1];
 
-//        System.out.println(Arrays.toString(fail) + ", " + firstLen + ", " + maxMiddle + ", " + max);
+                if(key.charAt(i) == key.charAt(j)) {
+                    pi[i] = ++j;
+                }
 
-        int totalLen = Math.min(max, maxMiddle);
-        if(totalLen > 0 && max >= maxMiddle) {
-            String result = str.substring(0, totalLen);
-
-            if(str.endsWith(result)) {
-                System.out.println(str.substring(0, totalLen));
-            } else {
-                System.out.println(-1);
+                System.out.println(pi[i]);
             }
-        } else {
-            System.out.println(-1);
+            System.out.println(Arrays.toString(pi));
         }
     }
 }
