@@ -1,17 +1,17 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.gold.gold3.p1644;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +64,58 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
-
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
-
-
-        }
-
-        return null;
-    }
-
     public static void main(String[] args) {
-        int N = 17;
+//        long time = System.currentTimeMillis();
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
-
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        List<Integer> primes = new ArrayList<>();
+        // 190ms
+        for(int i = 2; i <= 4100000; i++) {
+            if(isPrime(i)) {
+                primes.add(i);
             }
         }
+
+//        System.out.println(System.currentTimeMillis() - time);
+
+        FastReader scan = new FastReader();
+
+        int N = scan.nextInt();
+
+        int left = 0;
+        int right = 0;
+        int count = 0;
+        int total = 0;
+
+        while(left <= N && right <= N) {
+            if(total < N) {
+//                if(primes.get(right) >= N) break;
+                total += primes.get(right++);
+            }
+
+            if(total > N) {
+                total -= primes.get(left++);
+                if(primes.get(left) > N) break;
+            }
+
+            if(total == N) {
+                count++;
+                total -= primes.get(left++);
+                if(primes.get(left) > N) break;
+            }
+//            System.out.println(count + ", " + total + ", " + left + ", " + right);
+        }
+
+        System.out.println(count);
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
+
+    static boolean isPrime(long n) {
+        if(n < 2) return false;
+        if(n == 2 || n == 3) return true;
+        if(n%2 == 0 || n%3 == 0) return false;
+        long sqrtN = (long)Math.sqrt(n)+1;
+        for(long i = 6L; i <= sqrtN; i += 6) {
+            if(n%(i-1) == 0 || n%(i+1) == 0) return false;
+        }
+        return true;
+    }
 }

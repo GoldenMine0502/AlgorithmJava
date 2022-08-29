@@ -1,17 +1,15 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.gold.gold2.p1300A_binary_bound_k;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +62,61 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+//    public static int binarySearch(int[] arr, int value) {
+//        int left = 0;
+//        int right = arr.length - 1;
+//
+//        while(true) {
+//            int mid = (left + right) / 2;
+//            if(arr[mid] == value) {
+//                return mid;
+//            } else if(arr[mid] > value) {
+//                right = mid - 1;
+//            } else {
+//                left = mid + 1;
+//            }
+//
+//            if(left > right) return -1;
+//        }
+//    }
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
+    public static long lowerBound(int N, int K) {
+        long lo = 1;
+        long hi = K;
 
+        // lo가 hi랑 같아질 때 까지 반복
+        while (lo < hi) {
+            long mid = (lo + hi) / 2; // 중간위치를 구한다.
+            long count = 0;
+
+            for(int i = 1; i <= N; i++) {
+                count += Math.min(mid / i, N);
+            }
+
+            /*
+             *  key 값이 중간 위치의 값보다 작거나 같을 경우
+             *
+             *  (중복 원소에 대해 왼쪽으로 탐색하도록 상계를 내린다.)
+             */
+            if (K <= count) {
+                hi = mid;
+            }
+
+            else {
+                lo = mid + 1;
+            }
 
         }
 
-        return null;
+        return lo;
     }
 
     public static void main(String[] args) {
-        int N = 17;
+        FastReader scan = new FastReader();
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+        int N = scan.nextInt();
+        int k = scan.nextInt();
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
-            }
-        }
+        System.out.println(lowerBound(N, k));
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

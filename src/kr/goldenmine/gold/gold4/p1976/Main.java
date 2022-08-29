@@ -1,17 +1,16 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.gold.gold4.p1976;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +63,58 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+    public static int find(int[] arr, int value) {
+        if(arr[value] == value)
+            return value;
+        return arr[value] = find(arr, arr[value]);
+    }
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
+    public static void merge(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
+        if(x == y) return;
+        arr[y] = x;
+    }
 
+    public static boolean isUnion(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
 
-        }
-
-        return null;
+        return x == y;
     }
 
     public static void main(String[] args) {
-        int N = 17;
+        FastReader scan = new FastReader();
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+        int N = scan.nextInt();
+        int M = scan.nextInt();
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        int[] arr = new int[N + 1];
+        for(int i = 1; i <= N; i++) {
+            arr[i] = i;
+        }
+
+        for(int y = 1; y <= N; y++) {
+            for(int x = 1; x <= N; x++) {
+                int input = scan.nextInt();
+                if(input == 1) {
+                    merge(arr, x, y);
+                }
+//                System.out.println(input);
             }
         }
+
+        int first = scan.nextInt();
+        int i = 0;
+        while(i < M - 1) {
+            boolean union = isUnion(arr, first, scan.nextInt());
+//            System.out.println(union + ", " + i + ", " + M);
+            if(!union) {
+                break;
+            }
+            i++;
+        }
+//        System.out.println(M + ", " + first + ", " + Arrays.toString(arr));
+        System.out.println(i == M - 1 ? "YES" : "NO");
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

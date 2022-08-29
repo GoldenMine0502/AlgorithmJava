@@ -1,17 +1,13 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.silver.silver2.p11725;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +60,52 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+    public static void main(String[] args) throws IOException {
+        FastReader scan = new FastReader();
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
+        int N = scan.nextInt();
+//        int[] tree = new int[4 * N];
 
+        int[] parents = new int[N + 1];
+        List<List<Integer>> list = new ArrayList<>();
 
+        for(int i = 0; i <= N; i++) {
+            list.add(new ArrayList<>());
         }
 
-        return null;
-    }
+        for(int i = 0; i < N - 1; i++) {
+            int start = scan.nextInt();
+            int finish = scan.nextInt();
 
-    public static void main(String[] args) {
-        int N = 17;
+            list.get(start).add(finish);
+            list.get(finish).add(start);
+        }
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(1);
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        while(!queue.isEmpty()) {
+            int current = queue.poll();
+
+            List<Integer> nexts = list.get(current);
+
+            for(int i = 0; i < nexts.size(); i++) {
+                int next = nexts.get(i);
+
+                if(parents[next] == 0) {
+                    parents[next] = current;
+                    queue.add(next);
+                }
             }
         }
+
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        for(int i = 2; i <= N; i++) {
+            writer.write(String.valueOf(parents[i]));
+            writer.newLine();
+        }
+
+        writer.close();
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

@@ -1,17 +1,16 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.platinum.platinum5.p16570;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +63,57 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+    public static int[] getFailure(int[] key) {
+        int[] pi = new int[key.length];
+        pi[0] = 0;
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
+        int j = 0;
 
+        for(int i = 1; i < key.length; i++) {
+            while(j > 0 && key[i] != key[j])
+                j = pi[j - 1];
 
+            if(key[i] == key[j]) {
+                pi[i] = ++j;
+            }
         }
 
-        return null;
+        return pi;
     }
 
     public static void main(String[] args) {
-        int N = 17;
+        FastReader scan = new FastReader();
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+        int N = scan.nextInt();
+        int[] arr = new int[N];
+        int[] reversed = new int[N];
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        for(int i = 0; i < N; i++) {
+            arr[i] = scan.nextInt();
+            reversed[N - i - 1] = arr[i];
+        }
+
+        int[] fail = getFailure(reversed);
+
+//        System.out.println(Arrays.toString(fail));
+
+        int max = 0;
+
+        for(int i = 0; i < fail.length; i++) {
+            max = Math.max(max, fail[i]);
+        }
+
+        int count = 0;
+        for(int i = 0; i < fail.length; i++) {
+            if(max == fail[i]) {
+                count++;
             }
         }
+
+        if(max != 0) {
+            System.out.println(max + " " + count);
+        } else {
+            System.out.println(-1);
+        }
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

@@ -1,17 +1,13 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.gold.gold4.p1717S_union_find;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +60,52 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
-
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
-
-
-        }
-
-        return null;
+    public static int find(int[] arr, int value) {
+        if(arr[value] == value)
+            return value;
+        return arr[value] = find(arr, arr[value]);
     }
 
-    public static void main(String[] args) {
-        int N = 17;
+    public static void merge(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
+        if(x == y) return;
+        arr[y] = x;
+    }
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+    public static boolean isUnion(int[] arr, int x, int y) {
+        x = find(arr, x);
+        y = find(arr, y);
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        return x == y;
+    }
+
+    public static void main(String[] args) throws IOException {
+        FastReader scan = new FastReader();
+
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int N = scan.nextInt();
+        int M = scan.nextInt();
+
+        int[] arr = new int[N + 1];
+        for(int i = 1; i <= N; i++) {
+            arr[i] = i;
+        }
+
+        for(int i = 0; i < M; i++) {
+            int A = scan.nextInt();
+            int B = scan.nextInt();
+            int C = scan.nextInt();
+
+            if(A == 0) { // merge
+                merge(arr, B, C);
+            } else { // isUnion
+                writer.write(isUnion(arr, B, C) ? "YES" : "NO");
+                writer.newLine();
             }
         }
+
+        writer.close();
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

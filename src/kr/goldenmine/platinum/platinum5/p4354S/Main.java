@@ -1,17 +1,17 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.platinum.platinum5.p4354S;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +64,66 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+    public static int[] getPi(String key) {
+        int[] pi = new int[key.length()];
+        pi[0] = 0;
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
+        int j = 0;
 
+        for(int i = 1; i < key.length(); i++) {
+            while(j > 0 && key.charAt(i) != key.charAt(j))
+                j = pi[j - 1];
 
-        }
-
-        return null;
-    }
-
-    public static void main(String[] args) {
-        int N = 17;
-
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
-
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+            if(key.charAt(i) == key.charAt(j)) {
+                pi[i] = ++j;
             }
         }
+
+        return pi;
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
+
+    public static List<Integer> kmp(String text, String key) {
+        List<Integer> indices = new ArrayList<>();
+
+        int[] pi = getPi(key);
+
+        int j = 0;
+
+        for(int i = 0; i < text.length(); i++) {
+            while(j > 0 && text.charAt(i) != key.charAt(j))
+                j = pi[j - 1];
+
+            if(text.charAt(i) == key.charAt(j)) {
+                if(j == key.length() - 1) {
+                    indices.add(i - key.length() + 1);
+                    j = pi[j];
+                } else {
+                    j++;
+                }
+            }
+        }
+
+        return indices;
+    }
+
+    // 반레: aabaaaabaaaaabaaaabaa
+    public static void main(String[] args) {
+        FastReader scan = new FastReader();
+
+
+        String text;
+        while(!(text = scan.nextLine()).equals(".")) {
+            int[] pi = getPi(text);
+
+//            System.out.println(Arrays.toString(pi));
+
+            int len = (text.length() - pi[text.length() - 1]);
+            if(text.length() % len == 0) {
+                System.out.println(text.length() / len);
+            } else {
+                System.out.println(1);
+            }
+        }
+
+    }
 }

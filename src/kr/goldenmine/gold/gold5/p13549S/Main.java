@@ -1,17 +1,16 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.gold.gold5.p13549S;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +63,50 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+    static class Point {
+        int x;
+        int sec;
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
-
-
+        public Point(int x, int sec) {
+            this.x = x;
+            this.sec = sec;
         }
-
-        return null;
     }
 
     public static void main(String[] args) {
-        int N = 17;
+        FastReader scan = new FastReader();
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+        int N = scan.nextInt();
+        int K = scan.nextInt();
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        ArrayDeque<Point> queue = new ArrayDeque<>();
+        queue.addLast(new Point(N, 0));
+
+        boolean[] visited = new boolean[200001];
+
+        while(!queue.isEmpty()) {
+            Point p = queue.pollFirst();
+
+            if(p.x == K) {
+                System.out.println(p.sec);
+                return;
+            }
+
+            // N 최대치 곱하기 2 정도면 뭐...
+            if(p.x <= 100000 && !visited[2 * p.x]) {
+                visited[2 * p.x] = true;
+                queue.addLast(new Point(2 * p.x, p.sec));
+            }
+
+            if(p.x >= 1 && !visited[p.x - 1]) {
+                visited[p.x - 1] = true;
+                queue.addLast(new Point(p.x - 1, p.sec + 1));
+            }
+
+            if(p.x < 200000 && !visited[p.x + 1]) {
+                visited[p.x + 1] = true;
+                queue.addLast(new Point(p.x + 1, p.sec + 1));
             }
         }
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

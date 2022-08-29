@@ -1,9 +1,9 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.silver.silver1.p12852;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -12,6 +12,7 @@ public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +65,60 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
-
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
-
-
-        }
-
-        return null;
-    }
-
     public static void main(String[] args) {
-        int N = 17;
+        FastReader scan = new FastReader();
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+        int N = scan.nextInt();
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        int[] dp = new int[N + 1];
+
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(N);
+
+        while(!queue.isEmpty()) {
+            int value = queue.poll();
+
+            if(value == 1) {
+                break;
+            }
+
+            if(value % 3 == 0 && dp[value / 3] == 0) {
+                queue.add(value / 3);
+                dp[value / 3] = value;
+            }
+            if(value % 2 == 0 && dp[value / 2] == 0) {
+                queue.add(value / 2);
+                dp[value / 2] = value;
+            }
+            if(dp[value - 1] == 0) {
+                queue.add(value - 1);
+                dp[value - 1] = value;
             }
         }
+
+        int[] results = new int[N + 1];
+
+        int next = 1;
+        int index = 0;
+        while(next < N) {
+            results[index++] = dp[next];
+
+            next = dp[next];
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(index);
+        sb.append("\n");
+
+        for(int i = index - 1; i >= 0; i--) {
+            sb.append(results[i]);
+            sb.append(" ");
+        }
+
+        sb.append(1);
+        System.out.println(sb);
+
+//        System.out.println(Arrays.toString(dp));
+//        System.out.println(Arrays.toString(results));
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

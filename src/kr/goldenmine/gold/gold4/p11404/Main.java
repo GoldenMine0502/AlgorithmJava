@@ -1,17 +1,13 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.gold.gold4.p11404;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.*;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +60,55 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+    public static void main(String[] args) throws IOException {
+        FastReader scan = new FastReader();
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
+        int N = scan.nextInt();
+        int M = scan.nextInt();
+        int INF = 10000000;
 
+        int[][] arr = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                arr[i][j] = INF;
 
-        }
-
-        return null;
-    }
-
-    public static void main(String[] args) {
-        int N = 17;
-
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
-
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+                if (i == j)
+                    arr[i][j] = 0;
             }
         }
+
+        for (int i = 0; i < M; i++) {
+            int a = scan.nextInt() - 1;
+            int b = scan.nextInt() - 1;
+            int c = scan.nextInt();
+
+            arr[a][b] = Math.min(arr[a][b], c);
+        }
+
+        for (int k = 0; k < N; k++) {
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    if (arr[i][j] > arr[i][k] + arr[k][j]) {
+                        arr[i][j] = arr[i][k] + arr[k][j];
+                    }
+                }
+            }
+        }
+
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (arr[i][j] != INF) {
+                    writer.write(String.valueOf(arr[i][j]));
+                } else {
+                    writer.write("0");
+                }
+                writer.write(" ");
+            }
+            writer.newLine();
+        }
+
+        writer.flush();
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }

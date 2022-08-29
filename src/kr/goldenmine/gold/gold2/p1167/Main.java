@@ -1,17 +1,17 @@
-package kr.goldenmine.platinum.platinum5.p8111;
+package kr.goldenmine.gold.gold2.p1167;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
     static class FastReader {
         BufferedReader br;
         StringTokenizer st;
+
         public FastReader() {
             br = new BufferedReader(
                     new InputStreamReader(System.in));
@@ -64,40 +64,51 @@ public class Main {
         }
     }
 
-    public static String getValue(int N) {
-        BigInteger bN = new BigInteger(String.valueOf(N));
-        Queue<String> texts = new LinkedList<>();
-        texts.add("1"); // 1이 적어도 하나 이상인데 0으로 시작하면 안된다... 그러면 1부터 시작해야 하는거 아닌가
+    static class Node {// 다음 노드의 인덱스와, 그 노드로 가는데 필요한 비용을 담고 있다.
+        int idx, cost;
 
-        while(!texts.isEmpty()) {
-            String text = texts.poll();
-
-
+        Node(int idx, int cost) {
+            this.idx = idx;
+            this.cost = cost;
         }
 
-        return null;
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "idx=" + idx +
+                    ", cost=" + cost +
+                    '}';
+        }
     }
 
     public static void main(String[] args) {
-        int N = 17;
+        FastReader scan = new FastReader();
 
-        for(int i = 0; i < 100000000; i++) {
-            String text = String.valueOf(N * i);
+        int N = scan.nextInt();
 
-            if(!text.contains("2") && !text.contains("3") && !text.contains("4") && !text.contains("5") &&
-                    !text.contains("6") && !text.contains("7") && !text.contains("8") && !text.contains("9")) {
-                System.out.println(text + ", " + i);
+        List<List<Integer>> nodes = new ArrayList<>();
+
+        for(int i = 1; i <= N; i++) {
+            nodes.add(new ArrayList<>());
+        }
+
+
+        for(int i = 1; i <= N; i++) {
+
+            while(true) {
+                int start = scan.nextInt();
+                if(start == -1) break;
+                int finish = scan.nextInt();
+
+                nodes.get(start).add(finish);
             }
         }
+
+        /*
+
+        2
+        0 3 4 9
+
+         */
     }
-//    public static void main(String[] args) {
-//        FastReader scan = new FastReader();
-//
-//        int T = scan.nextInt();
-//        for(int i = 0; i < T; i++) {
-//            int N = scan.nextInt();
-//
-//
-//        }
-//    }
 }
