@@ -1,4 +1,4 @@
-package kr.goldenmine.gold.gold3.p2638;
+package kr.goldenmine.gold.gold3.p2638S;
 
 import java.io.BufferedReader;
 import java.io.IOException;

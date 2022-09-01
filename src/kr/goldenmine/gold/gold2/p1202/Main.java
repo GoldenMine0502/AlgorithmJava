@@ -1,8 +1,10 @@
-package kr.goldenmine.platinum.platinum5.p2887;
+package kr.goldenmine.gold.gold2.p1202;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -62,23 +64,60 @@ public class Main {
         }
     }
 
-    static class Point {
-        int x;
-        int y;
-        int z;
+    static class Jewel {
+        int weight;
+        int value;
 
-        public Point(int x, int y, int z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+        public Jewel(int weight, int value) {
+            this.weight = weight;
+            this.value = value;
         }
 
-        public double distance(Point p) {
-            return Math.min(p.x - x, Math.min(p.y - y, p.z - z));
+        @Override
+        public String toString() {
+            return "Jewel{" +
+                    "weight=" + weight +
+                    ", value=" + value +
+                    '}';
         }
     }
 
     public static void main(String[] args) {
         FastReader scan = new FastReader();
+
+        int N = scan.nextInt();
+        int K = scan.nextInt();
+
+        Jewel[] jewels = new Jewel[N];
+        for(int i = 0; i < N; i++) {
+            int weight = scan.nextInt();
+            int value = scan.nextInt();
+            jewels[i] = new Jewel(weight, value);
+        }
+
+        int[] bags = new int[K];
+        for(int i = 0; i < K; i++) {
+            bags[i] = scan.nextInt();
+        }
+
+        Arrays.sort(jewels, new Comparator<Jewel>() {
+            @Override
+            public int compare(Jewel o1, Jewel o2) {
+                if(o1.value != o2.value) {
+                    return -Integer.compare(o1.value, o2.value);
+                } else {
+                    return Integer.compare(o1.weight, o2.weight);
+                }
+            }
+        });
+
+        int[] results = new int[N];
+        int index = 0;
+
+
+        Arrays.sort(bags);
+
+        System.out.println(Arrays.toString(jewels));
+        System.out.println(Arrays.toString(bags));
     }
 }
