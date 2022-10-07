@@ -1,10 +1,9 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.gold.gold4.p1043;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -68,22 +67,15 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int N = scan.nextInt();
+        int M = scan.nextInt();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        int[] peopleKnowReality = new int[N + 1];
+        List<List<Integer>> nodes = new ArrayList<>();
 
-            HashMap<String, List<String>> wears = new HashMap<>();
-
-            int total = 0;
-
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
-
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
-            }
+        for(int i = 0; i < M; i++) {
+            int people = scan.nextInt();
+            peopleKnowReality[people] = 1;
         }
     }
 }

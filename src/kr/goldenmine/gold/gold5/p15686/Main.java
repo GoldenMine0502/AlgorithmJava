@@ -1,10 +1,9 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.gold.gold5.p15686;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -65,24 +64,43 @@ public class Main {
         }
     }
 
+    static class Point {
+        int x;
+        int y;
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+//    public static int dfs(int N, List<Point> chickens, List<Point> houses) {
+//        int
+//    }
+
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int N = scan.nextInt();
+        int M = scan.nextInt();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        int[][] arr = new int[N][N];
 
-            HashMap<String, List<String>> wears = new HashMap<>();
+        List<Point> chickens = new ArrayList<>();
+        List<Point> houses = new ArrayList<>();
+        // 예상 최대 시간복잡도: 1100만
 
-            int total = 0;
+        for(int y = 0; y < N; y++) {
+            for(int x = 0; x < N; x++) {
+                arr[y][x] = scan.nextInt();
 
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
+                if(arr[y][x] == 2) {
+                    chickens.add(new Point(x, y));
+                }
 
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
+                if(arr[y][x] == 1) {
+                    houses.add(new Point(x, y));
+                }
             }
         }
     }

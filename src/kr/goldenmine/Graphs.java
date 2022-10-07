@@ -51,7 +51,7 @@ public class Graphs {
 
             onPolled.accept(p);
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < directions.length; i++) {
                 Point next = p.add(directions[i]);
 
                 if (next.x >= 0 && next.x < X && next.y >= 0 && next.y < Y) {

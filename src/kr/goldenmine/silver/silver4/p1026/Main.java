@@ -1,11 +1,9 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.silver.silver4.p1026;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -68,22 +66,28 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int N = scan.nextInt();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        int[] A = new int[N];
+        int[] B = new int[N];
 
-            HashMap<String, List<String>> wears = new HashMap<>();
-
-            int total = 0;
-
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
-
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
-            }
+        for(int i = 0; i < N; i++) {
+            A[i] = scan.nextInt();
         }
+
+        for(int i = 0; i < N; i++) {
+            B[i] = scan.nextInt();
+        }
+
+        // 각 A, B
+        Arrays.sort(A);
+        Arrays.sort(B);
+
+        int sum = 0;
+        for(int i = 0; i < N; i++) {
+            sum += A[i] * B[N - i - 1];
+        }
+
+        System.out.println(sum);
     }
 }

@@ -1,8 +1,9 @@
-package kr.goldenmine.gold.gold5.p2293;
+package kr.goldenmine.gold.gold4.p12851;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -62,34 +63,51 @@ public class Main {
         }
     }
 
-    public static int solve(int[] arr, int[][] cache, int current, int k) {
-        System.out.println(current);
-        if(current > k) return 0;
-        if(current == k) return 1;
+    static class Node {
+        int pos;
+        int sec;
 
-        int sum = 0;
-
-        for(int i = 0; i < arr.length; i++) {
-            sum += solve(arr, cache, current + arr[i], k);
+        public Node(int pos, int sec) {
+            this.pos = pos;
+            this.sec = sec;
         }
-
-        return sum;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FastReader scan = new FastReader();
 
-        int n = scan.nextInt();
-        int k = scan.nextInt();
+        int N = scan.nextInt();
+        int K = scan.nextInt();
 
-        int[] arr = new int[n];
-        int[][] cache = new int[n][2];
-        for(int i = 0 ; i < n; i++) {
-            arr[i] = scan.nextInt();
+        int[] last = new int[200001];
+
+        ArrayDeque<Node> queue = new ArrayDeque<>();
+        queue.add(new Node(N, 0));
+
+        while(!queue.isEmpty()) {
+            Node node = queue.removeFirst();
+
+            if(node.pos == K) {
+                continue;
+            }
+
+            // N 최대치 곱하기 2 정도면 뭐...
+            if(node.pos <= 100000 && last[2 * node.pos] == -1) {
+                last[2 * node.pos] = last[node.pos] + 1;
+                queue.addLast(new Node(2 * node.pos, node.sec + 1));
+            }
+
+            if(node.pos >= 1 && last[node.pos - 1] == -1) {
+                last[node.pos - 1] = last[node.pos] + 1;
+                queue.addLast(new Node(node.pos - 1, node.sec + 1));
+            }
+
+            if(node.pos < 200000) {
+                last[node.pos + 1] = last[node.pos] + 1;
+                queue.addLast(new Node(node.pos + 1, node.sec + 1));
+            }
         }
 
-        int result = solve(arr, cache, 0, k);
-
-        System.out.println(result);
+        System.out.println(last[N]);
     }
 }

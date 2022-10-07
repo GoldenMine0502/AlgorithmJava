@@ -1,11 +1,9 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.silver.silver4.p2217S;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -68,22 +66,21 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int N = scan.nextInt();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        int[] arr = new int[N];
 
-            HashMap<String, List<String>> wears = new HashMap<>();
-
-            int total = 0;
-
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
-
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
-            }
+        for(int i = 0; i < N; i++) {
+            arr[i] = scan.nextInt();
         }
+
+        Arrays.sort(arr);
+
+        int max = 0;
+        for(int i = arr.length - 1; i >= 0; i--) {
+//            System.out.println(arr[i] * (arr.length - i));
+            max = Math.max(max, arr[i] * (arr.length - i));
+        }
+        System.out.println(max);
     }
 }

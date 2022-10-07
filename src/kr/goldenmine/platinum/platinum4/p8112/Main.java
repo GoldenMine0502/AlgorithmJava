@@ -1,11 +1,8 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.platinum.platinum4.p8112;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -66,24 +63,43 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        FastReader scan = new FastReader();
+        int[] results = new int[10];
 
-        int T = scan.nextInt();
+        for(int i = 0; i < 10; i++) {
+            int mul = 1;
+            while(true) {
+                int result = i * mul;
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+                if(result % 10 == 0 || result % 10 == 1) {
+                    break;
+                }
 
-            HashMap<String, List<String>> wears = new HashMap<>();
-
-            int total = 0;
-
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
-
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
+                mul++;
             }
+
+            results[i] = mul;
+        }
+
+        for(int i = 0; i < 10; i++) {
+            System.out.println(results[i]);
         }
     }
+//    public static void main(String[] args) {
+//        FastReader scan = new FastReader();
+//
+//        int T = scan.nextInt();
+//
+//        while(T-- > 0) {
+//            int N = scan.nextInt();
+//
+//            // 0
+//            // 1
+//
+//            // 01
+//            // 00
+//            // 11
+//            // 10
+//
+//        }
+//    }
 }

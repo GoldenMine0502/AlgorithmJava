@@ -1,11 +1,10 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.silver.silver1.p1931A_greedy_meeting;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -65,25 +64,51 @@ public class Main {
         }
     }
 
+    static class Meeting {
+        int start;
+        int finish;
+
+        public Meeting(int start, int finish) {
+            this.start = start;
+            this.finish = finish;
+        }
+    }
+
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int N = scan.nextInt();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        PriorityQueue<Meeting> meetings = new PriorityQueue<>(new Comparator<Meeting>() {
+            @Override
+            public int compare(Meeting o1, Meeting o2) {
+                if(o1.finish == o2.finish) {
+                    return o1.start - o2.start;
+                } else {
+                    return o1.finish - o2.finish;
+                }
+            }
+        });
 
-            HashMap<String, List<String>> wears = new HashMap<>();
+        for(int i = 0; i < N; i++) {
+            int start = scan.nextInt();
+            int finish = scan.nextInt();
 
-            int total = 0;
+            meetings.add(new Meeting(start, finish));
+        }
 
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
+        int lastFinish = 0;
+        int total = 0;
 
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
+        while(!meetings.isEmpty()) {
+            Meeting meeting = meetings.poll();
+
+            if(lastFinish <= meeting.start) {
                 total++;
+                lastFinish = meeting.finish;
             }
         }
+
+        System.out.println(total);
     }
 }

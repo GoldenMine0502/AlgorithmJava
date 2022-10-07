@@ -1,11 +1,9 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.gold.gold5.p2225;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -68,22 +66,54 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int N = scan.nextInt();
+        int K = scan.nextInt();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        // dp[a][b] a숫자까지 b개로 갈 수 있는 경우의 수
+        int[][] dp = new int[K + 1][N + 1];
 
-            HashMap<String, List<String>> wears = new HashMap<>();
+        // 한개로는 하나로만 갈 수 있다.
 
-            int total = 0;
+        // 합분해 -> dp[n][k] += dp[n-n'][k-1]
+        // k = 2일때 n=1 -> dp[1][2] = dp[1][1]
+        // k = 2일때 n=2 -> dp[2][2] = dp[1][1] + dp[2][1]
+        // k = 3일때 n=2 -> dp[3][2] = dp[1][1] + dp[2][1] + dp[3][1]
+        // k = 3일때 n=2 -> dp[3][3] = dp[3][2] + dp[3][1] +
 
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
+//        for (int n = 0; n <= N; n++) {
+//            for (int k = 1; k <= K; k++) {
+//                for (int n2 = n - 1; n2 >= 0; n2--) {
+//                    dp[n][k] += dp[n - n2][k - 1]; // n2를 더했다고 생각하기
+//                }
+////                dp[n][k] += dp[n][k - 1];
+//            }
+//        }
 
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
+        for (int i = 1; i <= K; i++) {
+            dp[i][0] = 1;
+        }
+        for (int i = 1; i <= K; i++) {
+            for (int j = 1; j <= N; j++) {
+                dp[i][j] = (dp[i][j - 1] + dp[i - 1][j]) % 1000000000; // 1000000000으로 나누는 걸 출력할 때 주면 틀렸다고 뜸.
             }
         }
+
+//        for (int k = 1; k <= N; k++) {
+//            System.out.print(k + " ");
+//        }
+//        System.out.println();
+
+//        int sum = 0;
+//        for (int k = 1; k <= K; k++) {
+//            for (int n = 1; n <= N; n++) {
+//                System.out.print(dp[n][k] + " ");
+//                sum += dp[n][k];
+//            }
+//            System.out.println();
+//        }
+
+//        System.out.println("sum: " + sum);
+
+        System.out.println(dp[K][N]);
     }
 }

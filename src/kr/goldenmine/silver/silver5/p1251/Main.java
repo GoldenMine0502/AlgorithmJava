@@ -1,11 +1,8 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.silver.silver5.p1251;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -68,22 +65,29 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        String text = scan.next();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        String result = null;
 
-            HashMap<String, List<String>> wears = new HashMap<>();
+        for (int indexLeft = 1; indexLeft < text.length() - 1; indexLeft++) {
+            for (int indexRight = indexLeft + 1; indexRight < text.length(); indexRight++) {
+                String text1 = new StringBuilder(text.substring(0, indexLeft)).reverse().toString();
+                String text2 = new StringBuilder(text.substring(indexLeft, indexRight)).reverse().toString();
+                String text3 = new StringBuilder(text.substring(indexRight)).reverse().toString();
 
-            int total = 0;
+                String current = text1 + text2 + text3;
 
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
-
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
+                if (result == null) {
+                    result = current;
+                } else {
+                    // current가 result보다 사전상 앞서면 바꾸기
+                    if (current.compareTo(result) < 0) {
+                        result = current;
+                    }
+                }
             }
         }
+
+        System.out.println(result);
     }
 }

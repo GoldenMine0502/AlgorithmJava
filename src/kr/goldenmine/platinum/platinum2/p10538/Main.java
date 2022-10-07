@@ -1,10 +1,9 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.platinum.platinum2.p10538;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -65,25 +64,76 @@ public class Main {
         }
     }
 
+    public static int[] getFailure(String key) {
+        int[] pi = new int[key.length()];
+        pi[0] = 0;
+
+        int j = 0;
+
+        for(int i = 1; i < key.length(); i++) {
+            while(j > 0 && key.charAt(i) != key.charAt(j))
+                j = pi[j - 1];
+
+            if(key.charAt(i) == key.charAt(j)) {
+                pi[i] = ++j;
+            }
+        }
+
+        return pi;
+    }
+
+    public static List<Integer> kmp(String text, String key) {
+        List<Integer> indices = new ArrayList<>();
+
+        int[] pi = getFailure(key);
+
+        int j = 0;
+
+        for(int i = 0; i < text.length(); i++) {
+            while(j > 0 && text.charAt(i) != key.charAt(j))
+                j = pi[j - 1];
+
+            if(text.charAt(i) == key.charAt(j)) {
+                if(j == key.length() - 1) {
+                    indices.add(i - key.length() + 1);
+                    j = pi[j];
+                } else {
+                    j++;
+                }
+            }
+        }
+
+        return indices;
+    }
+
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int Y1 = scan.nextInt();
+        int X1 = scan.nextInt();
+        int Y2 = scan.nextInt();
+        int X2 = scan.nextInt();
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        char[][] small = new char[Y1][X1];
 
-            HashMap<String, List<String>> wears = new HashMap<>();
+        char[][] big = new char[Y2][X2];
 
-            int total = 0;
+        for(int y = 0; y < Y1; y++) {
+            String line = scan.next();
 
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
-
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
+            for(int x = 0; x < X1; x++) {
+                small[y][x] = line.charAt(x);
             }
         }
+
+        for(int y = 0; y < Y2; y++) {
+            String line = scan.next();
+
+            for(int x = 0; x < X2; x++) {
+                big[y][x] = line.charAt(x);
+            }
+        }
+
+
     }
 }

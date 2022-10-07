@@ -1,11 +1,8 @@
-package kr.goldenmine.silver.silver3.p9375;
+package kr.goldenmine.gold.gold4.p2133;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -68,22 +65,26 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int T = scan.nextInt();
+        int N = scan.nextInt();
+        /*
+        1번째 줄일때: 0가지
+        2번째 줄일때: 3가지 ||, _
 
-        while(T-- > 0) {
-            int N = scan.nextInt();
+        홀수개로 끝나는건 불가능하다. 왜냐하면 모든 타일의 크기가 짝수 크기이기 때문이다.
 
-            HashMap<String, List<String>> wears = new HashMap<>();
+        두줄을 사용해서 만드는 경우: 3가지
+        네 줄을 사용해서 만드는 경우: 두줄 * 두줄(= 9가지) +
 
-            int total = 0;
+        4번째 줄일때: (2가지 경우 * 2가지 경우) + (4가지 추가 -> 두칸짜리가 중간에 오는 경우 -> 3가지)
+         */
 
-            for(int i = 0; i < N; i++) {
-                String value = scan.next();
-                String type = scan.next();
-
-                wears.computeIfAbsent(type, (it) -> new ArrayList<>()).add(value);
-                total++;
-            }
+        int[] arr = new int[N + 1];
+        int two = 3;
+        int four = 3;
+        for(int i = 0; i < N; i++) {
+            if(i % 2 == 1) continue; // 홀수는 불가능하다
         }
+
+        System.out.println(arr[N]);
     }
 }
