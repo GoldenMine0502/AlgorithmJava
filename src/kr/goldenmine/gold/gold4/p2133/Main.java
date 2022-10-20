@@ -3,6 +3,7 @@ package kr.goldenmine.gold.gold4.p2133;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -62,28 +63,25 @@ public class Main {
         }
     }
 
+    // https://yabmoons.tistory.com/536
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
-        /*
-        1번째 줄일때: 0가지
-        2번째 줄일때: 3가지 ||, _
+        int[] arr = new int[30 + 1];
+        arr[0] = 1;
+        arr[2] = 3;
+        for(int i = 4; i <= N; i += 2) {
+            arr[i] = arr[i - 2] * 3;
 
-        홀수개로 끝나는건 불가능하다. 왜냐하면 모든 타일의 크기가 짝수 크기이기 때문이다.
-
-        두줄을 사용해서 만드는 경우: 3가지
-        네 줄을 사용해서 만드는 경우: 두줄 * 두줄(= 9가지) +
-
-        4번째 줄일때: (2가지 경우 * 2가지 경우) + (4가지 추가 -> 두칸짜리가 중간에 오는 경우 -> 3가지)
-         */
-
-        int[] arr = new int[N + 1];
-        int two = 3;
-        int four = 3;
-        for(int i = 0; i < N; i++) {
-            if(i % 2 == 1) continue; // 홀수는 불가능하다
+            int sum = 0;
+            for(int j = i - 4; j >= 0; j -= 2) {
+                sum += arr[j] * 2;
+            }
+            arr[i] += sum;
         }
+
+//        System.out.println(Arrays.toString(arr));
 
         System.out.println(arr[N]);
     }
