@@ -47,10 +47,13 @@ public class HuffmanCoding {
     public static void main(String[] args) {
         // A: 450 T: 90 G: 120 C: 270
         Node[] nodes = {
-                new Node('A', 450),
-                new Node('T', 90),
-                new Node('G', 120),
-                new Node('C', 270),
+                new Node('A', 4),
+                new Node('C', 1),
+                new Node('T', 3),
+                new Node('D', 1),
+                new Node('W', 1),
+                new Node('K', 1),
+                new Node('N', 1),
         };
 
         // Line 2를 수행한 후의 Q -> 우선순위 큐 Q를 생성
