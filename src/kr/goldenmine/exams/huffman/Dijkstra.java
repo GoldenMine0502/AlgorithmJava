@@ -65,7 +65,7 @@ public class Dijkstra {
         while(!queue.isEmpty()) {
             Node current = queue.poll();
 
-            System.out.println(Arrays.toString(dist));
+            System.out.println(current + ", " + Arrays.toString(dist));
 
             if (dist[current.idx] < current.cost) {
                 continue;
@@ -76,9 +76,11 @@ public class Dijkstra {
             for(int i = 0; i < nexts.size(); i++) {
                 Node next = nexts.get(i);
 
+
                 int nextCost = current.cost + next.cost;
 
                 if(dist[next.idx] > nextCost) {
+                    System.out.println("next: " + next);
                     dist[next.idx] = nextCost;
                     queue.add(new Node(next.idx, dist[next.idx]));
                 }
