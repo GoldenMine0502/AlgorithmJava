@@ -27,11 +27,11 @@ public class DPCoinChange {
                 for kk = 1 to k
                     if(kk != minimumCoinIndex)
                         if(i >= d_i)
-                            types[i][k] = types[i - d_minimumCoinIndex)][k];
+                            types[i][k] = types[i - d_minimumCoinIndex][k];
 
         // types[N][코인인덱스]가 곧 해당하는 액면가에 대한 코인의 갯수가 된다.
          */
-        List<Integer> coins = Arrays.asList(3, 7, 11, 17);
+        List<Integer> coins = Arrays.asList(17, 11, 7, 3);
 
         int N = 51;
         int[] dp = new int[N + 1];

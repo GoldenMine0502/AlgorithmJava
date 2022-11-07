@@ -110,39 +110,8 @@ public class ChainedMatrixMultiplication {
             routes[index++] = Point(last.k + 1, last.j)
             queue.add(lastlastRight)
 
-        print or return routes.reverse()
+        이진 트리의 가장 depth가 깊은 곳부터 출력
         //return C[1, n]
-         */
-
-        /*
-                // 첫 인덱스 비우기
-        lasts[index++] = null;
-
-        queue.add(previous[1][n]);
-        lasts[index++] = new Point(1, n);
-
-        while(!queue.isEmpty()) {
-            Point3D last = queue.poll();
-
-            if(last == null) { // 자식 노드가 없으므로 null 넣고 진행
-                lasts[index++] = null;
-                lasts[index++] = null;
-                continue;
-            }
-
-            Point3D lastlastLeft = previous[last.i][last.k];
-            Point3D lastlastRight = previous[last.k + 1][last.j];
-
-//            System.out.println(last + ", " + (lastlastLeft != null) + ", " + (lastlastRight != null));
-
-//            System.out.println("left add: " + lastlastLeft + " from " + last);
-            lasts[index++] = new Point(last.i, last.k);
-            queue.add(lastlastLeft);
-
-//            System.out.println("right add: " + lastlastRight + " from " + last);
-            lasts[index++] = new Point(last.k + 1, last.j);
-            queue.add(lastlastRight);
-        }
          */
         Matrix[] matrices = {
                 new Matrix(10, 20),
