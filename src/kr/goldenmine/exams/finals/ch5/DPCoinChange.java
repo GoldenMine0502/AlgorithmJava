@@ -31,47 +31,22 @@ public class DPCoinChange {
 
         // types[N][코인인덱스]가 곧 해당하는 액면가에 대한 코인의 갯수가 된다.
          */
-        List<Integer> coins = Arrays.asList(17, 11, 7, 3);
+        List<Integer> coins = Arrays.asList(16, 10, 5, 1);
 
-        int N = 51;
+        int N = 20;
         int[] dp = new int[N + 1];
-        int[][] types = new int[N + 1][coins.size()];
 
         for (int i = 1; i <= N; i++) {
             dp[i] = N + 1;
-            int minimumCoinType = -1;
 
-            for (int k = 0; k < coins.size(); k++) {
-                int coin = coins.get(k);
+            for (int coin : coins) {
                 if (i - coin >= 0) {
-                    if (dp[i - coin] + 1 < dp[i]) {
-                        dp[i] = dp[i - coin] + 1;
-                        minimumCoinType = k;
-                    }
-                }
-            }
-
-            if (minimumCoinType >= 0) {
-                types[i][minimumCoinType] = types[i - coins.get(minimumCoinType)][minimumCoinType] + 1;
-
-                for(int k = 0; k < coins.size(); k++) {
-                    if(k != minimumCoinType) {
-                        if(i >= coins.get(k))
-                            types[i][k] = types[i - coins.get(minimumCoinType)][k];
-                    }
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
                 }
             }
         }
 
         System.out.println(Arrays.toString(dp));
-
-        for (int k = 0; k < coins.size(); k++) {
-            for (int i = 1; i <= N; i++) {
-                System.out.print(types[i][k] + " ");
-            }
-            System.out.println();
-        }
-//        System.out.println(Arrays.toString(K));
 
         int result = dp[N] > N ? -1 : dp[N];
         System.out.println(result);
