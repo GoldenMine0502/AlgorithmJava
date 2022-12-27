@@ -1,9 +1,8 @@
-package kr.goldenmine.gold.gold3.p7579F;
+package kr.goldenmine.gold.gold1.p2098F;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -63,26 +62,39 @@ public class Main {
         }
     }
 
-    static class Point {
-        int x;
-        int y;
-//        int count;
-//        int max;
+    static int minimum = Integer.MAX_VALUE;
 
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-//            this.count = count;
+    public static void dfs(int N, int all, int[][] dp, int[][] adjointMatrix, int[] visited, int x) {
+        // 4 bytes
+        // 00000000 00000000 00000000 00000000
+        //
+
+        if(visited[x] == all) {
+
         }
 
-        @Override
-        public String toString() {
-            return "Point{" +
-                    "x=" + x +
-                    ", y=" + y +
-//                    ", count=" + count +
-                    '}';
+        for(int i = 1; i <= N; i++) {
+            int next = adjointMatrix[x][i];
+
+            if(next > 0) {
+                int digit = 1 << i;
+                if((visited[x] & digit) == 0) {
+                    visited[x] |= digit;
+//                    dfs(N, all, dp, )
+                }
+            }
         }
+    }
+
+    public static int getAllVisitedNumber(int N) {
+        int sum = 0;
+
+        for(int i = 1; i <= N; i++) {
+            int digit = 1 << i;
+            sum |= digit;
+        }
+
+        return sum;
     }
 
     public static void main(String[] args) {
@@ -90,34 +102,28 @@ public class Main {
 
         int N = scan.nextInt();
 
-        int C = scan.nextInt();
+        int[][] adjointMatrix = new int[N + 1][N + 1];
+        int[][] dp = new int[N + 1][N + 1];
+        int[] visited = new int[N + 1];
 
-        int[] values = new int[N + 1];
-        int[] weights = new int[N + 1];
-
-        for(int i = 1; i <= N; i++) {
-            weights[i] = scan.nextInt();
-        }
-
-        for(int i = 1; i <= N; i++) {
-            values[i] = 100 - scan.nextInt();
-        }
-
-        int[] dp = new int[C + 1];
-
-        final int MAX = 1_0000_0000;
-
-        dp[0] = MAX;
-
-        for (int i = 1; i <= C; i++) {
-            dp[i] = dp[i - 1];
-            for (int j = 1; j <= N; j++) {
-                dp[i] = Math.max(dp[i], i >= weights[j] ? dp[i - weights[j]] + values[j] : MAX);
+        for(int x = 1; x <= N; x++) {
+            for(int y = 1; y <= N; y++) {
+                adjointMatrix[x][y] = scan.nextInt();
             }
         }
 
-        System.out.println(Arrays.toString(dp));
+        dfs(N, getAllVisitedNumber(N), dp, adjointMatrix, visited, 1);
 
-        System.out.println(dp[C]);
+        // 무조건 A부터 시작한다고 가정.
+        // A에서 B로 가는 경우:
+        // A -> B
+        // A -> C -> B
+        // A -> C -> D -> B
+        // A -> D -> B
+        // A -> D -> C -> B
+        // 
+        // A에서
+
+
     }
 }
