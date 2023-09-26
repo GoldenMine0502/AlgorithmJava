@@ -53,112 +53,28 @@ public class Main {
         }
     }
 
-    static class LongSumSegmentTree {
+    static class SegmentTree {
         private long[] arr;
         private long[] tree;
-        private int[] indices;
 
-        public LongSumSegmentTree(long[] arr) {
+        public SegmentTree(long[] arr) {
             this.arr = arr;
-            this.indices = new int[arr.length];
             this.tree = new long[4 * arr.length];
+
             init(0, arr.length - 1, 1);
         }
 
-        public long init(int start, int end, int node) {
-            if(start == end) {
-                indices[start] = node;
-                return this.tree[node] = arr[start];
-            }
-
-            int mid = (start + end) / 2;
-            return this.tree[node] = init(start, mid, node * 2) + init(mid + 1, end, node * 2 + 1);
-        }
-
-        public long sum(int left, int right) {
-            return sum(0, arr.length - 1, 1, left, right);
-        }
-
-        public long sum(int start, int end, int node, int left, int right) {
-            // 범위 밖에 있는 경우
-            if(left > end || right < start) return 0;
-
-            // 범위 안에 있는 경우
-            if(left <= start && end <= right) return tree[node];
-
-            // 범위가 걸쳐있는 경우
+        long init(int start, int end, int node) {
+            if(start == end) return tree[node] = arr[start];
 
             int mid = (start + end) / 2;
 
-            return sum(start, mid, node * 2, left, right) + sum(mid + 1, end, node * 2 + 1, left, right);
+            return tree[node] = init(start, mid, node * 2) + init(mid + 1, end, node * 2 + 1);
         }
 
-        public void updateSet(int index, long value) {
-            updateSet(0, arr.length - 1, 1, index, value);
-        }
-
-        public void updateSet(int start, int end, int node, int index, long value) {
-            long diff = value - arr[index];
-
-            update(start, end, node, index, diff);
-        }
-
-        public void update(int index, long diff) {
-            update(0, arr.length - 1, 1, index, diff);
-        }
-
-        public void update(int start, int end, int node, int index, long diff) {
-            if(index < start || index > end) return;
-
-            tree[node] += diff;
-
-            if (start == end) return;
-
-            int mid = (start + end) / 2;
-
-            update(start, mid, node * 2, index, diff);
-            update(mid + 1, end, node * 2 + 1, index, diff);
-
-            if(node == 1) {
-                arr[index] += diff;
-            }
-        }
-
-        public long findOneValue(int index) {
-            return tree[(int) indices[index]];
-        }
-
-        public void updateRanged(int range1, int range2, long diff) {
-            updateRanged(0, arr.length - 1, 1, range1, range2, diff);
-        }
-
-        // 리턴값: 나보다 아래 노드에서 바뀐 횟수
-        public int updateRanged(int start, int end, int node, int range1, int range2, long diff) {
-//            System.out.println("update  " + node + ", (" + start + ", " + end + "), (" + range1 + ", " + range2 + ")");
-            if(end < range1 && range2 > start) return 0;
-
-            if (start == end) {
-                tree[node] += diff;
-                return 1;
-            }
-
-            int mid = (start + end) / 2;
-
-            int count = updateRanged(start, mid, node * 2, range1, range2, diff) + updateRanged(mid + 1, end, node * 2 + 1, range1, range2, diff);
-
-//            System.out.println("update2 " + node + ", (" + start + ", " + end + "), (" + range1 + ", " + range2 + ")");
-//            System.out.println("count " + node + ", " + count);
-            tree[node] += diff * count;
-
-            return count;
-        }
-
-        public void printTreeAll() {
-            for(int i = 0; i < tree.length; i++) {
-                System.out.print(tree[i] + " ");
-            }
-            System.out.println();
-        }
+//        long sum(int start, int end, int node, int left, int right) {
+//
+//        }
     }
 
     public static void main(String[] args) {
