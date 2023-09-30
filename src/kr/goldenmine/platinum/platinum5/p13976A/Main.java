@@ -1,4 +1,4 @@
-package kr.goldenmine.platinum.platinum5.p13976;
+package kr.goldenmine.platinum.platinum5.p13976A;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -72,7 +72,7 @@ public class Main {
 
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
+        long N = scan.nextLong();
 
 //        long[][] m = {
 //                {1, 1}
@@ -102,12 +102,12 @@ public class Main {
         long[][] multiplied = pow(matrix, matrix, N / 2);
         long[][] res = mul(multiplied, first);
 
-        for(int i = 0; i < res.length; i++) {
-            for (int j = 0; j < res[i].length; j++) {
-                System.out.print(res[i][j] + " ");
-            }
-            System.out.println();
-        }
+//        for(int i = 0; i < res.length; i++) {
+//            for (int j = 0; j < res[i].length; j++) {
+//                System.out.print(res[i][j] + " ");
+//            }
+//            System.out.println();
+//        }
         System.out.println(res[1][0]);
     }
 
@@ -122,6 +122,7 @@ public class Main {
                 long sum = 0;
 
                 for(int k = 0; k < arr2.length; k++) {
+//                    System.out.println(arr[i][k] + ", " + arr[k][j] + "=" + arr[i][k] * arr[k][j] + ", " + sum);
                     sum += ((arr[i][k] % MOD) * (arr2[k][j] % MOD)) % MOD;
                     sum = (sum + MOD) % MOD;
 //                    sum %= MOD;
