@@ -66,8 +66,8 @@ public class Main {
     public static void main(String[] args) {
         // https://memoacmicpc.tistory.com/entry/%EB%B0%B1%EC%A4%80-13976%EB%B2%88-%ED%83%80%EC%9D%BC-%EC%B1%84%EC%9A%B0%EA%B8%B0-2
         long[][] matrix = {
-                { 4, -1},
-                { 1,  0}
+                {4, -1},
+                {1,  0}
         };
 
         FastReader scan = new FastReader();
