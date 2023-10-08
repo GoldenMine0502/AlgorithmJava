@@ -79,12 +79,12 @@ public class Main {
         // DP[i+1] = DP[i] + max(0, abs(diff[i+1]) - abs(diff[i]))
         int[] dp = new int[N + 1];
         for(int i = 1; i <= N; i++) {
-            int diff0 = finish[i] - start[i];
-            int diff1 = finish[i - 1] - start[i - 1];
+            int diff0 = Math.abs(finish[i] - start[i]);
+            int diff1 = Math.abs(finish[i - 1] - start[i - 1]);
             if(diff0 * diff1 > 0) {
-                dp[i] = dp[i - 1] + Math.max(0, Math.abs(diff0) - Math.abs(diff1));
+                dp[i] = dp[i - 1] + Math.max(0, diff0 - diff1);
             } else {
-                dp[i] = dp[i - 1] + Math.abs(diff0);
+                dp[i] = dp[i - 1] + diff0;
             }
         }
         System.out.println(dp[N]);
