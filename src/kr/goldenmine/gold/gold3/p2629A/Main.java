@@ -66,13 +66,13 @@ public class Main {
     static int[] weights;
 
     // dp[y][x] : x번까지의 추를 사용했을 때 y 무게를 만들 수 있는지에 대한 여부
-    public static void solve(boolean[][] dp, int C, int i, int w) {
+    public static void solve(boolean[][] dp, int i, int w) {
         if(i > N || dp[w][i]) return;
 //        System.out.println(w + ", " + i);
         dp[w][i] = true;
-        solve(dp, C, i + 1, w + weights[i]); // 내 자리에 추 더함
-        solve(dp, C, i + 1, Math.abs(w - weights[i])); // ?
-        solve(dp, C, i + 1, w); // 그대로
+        solve(dp, i + 1, w + weights[i]); // 내 자리에 추 더함
+        solve(dp, i + 1, Math.abs(w - weights[i])); // ?
+        solve(dp, i + 1, w); // 그대로
     }
 
     public static void main(String[] args) {
@@ -88,7 +88,7 @@ public class Main {
         for(int i = 0; i < T; i++) {
             int C = scan.nextInt();
             boolean[][] dp = new boolean[40001][31];
-            solve(dp, C, 0, 0);
+            solve(dp,0, 0);
 
             System.out.print(dp[C][N] ? "Y " : "N ");
         }
