@@ -1,9 +1,8 @@
-package kr.goldenmine.silver.silver3.p1021S;
+package kr.goldenmine.silver.silver1.p1309A;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -66,44 +65,21 @@ public class Main {
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
+        final int MOD = 9901;
+
         int N = scan.nextInt();
-        int M = scan.nextInt();
 
-        ArrayDeque<Integer> deque = new ArrayDeque<>();
-        for(int i = 1; i <= N; i++) {
-            deque.add(i);
+        int[][] dp = new int[100001][3];
+        dp[1][0] = dp[1][1] = dp[1][2] = 1; // 기저 사례
+
+        for(int i = 2; i <= N; i++) {
+            dp[i][0] = (dp[i - 1][0] + dp[i - 1][1] + dp[i - 1][2]) % MOD;
+            dp[i][1] = (dp[i - 1][0] + dp[i - 1][2]) % MOD;
+            dp[i][2] = (dp[i - 1][0] + dp[i - 1][1]) % MOD;
         }
 
-        int calculation = 0;
-        for(int i = 0; i < M; i++) {
-            int VAL = scan.nextInt();
+        long ans = (dp[N][0] + dp[N][1] + dp[N][2]) % MOD;
 
-            int size = deque.size();
-
-            int j = 0;
-            for(; j < size; j++) {
-                int first = deque.getFirst();
-                if(VAL != first) {
-                    // 무조건 2번 연산
-                    deque.removeFirst();
-                    deque.addLast(first);
-                } else {
-                    break;
-                }
-            }
-            if(j > 0) {
-                // 3번 연산은 (size - 2번 연산 횟수) 이다.
-                int j2 = size - j;
-
-                if(j < j2) { // j가 더 작으므로 2번 연산으로 결정
-                    calculation += j;
-                } else { // j2가 더 작으므로 3번 연산으로 결정
-                    calculation += j2;
-                }
-//                System.out.println(deque + ", " + j + ", " + j2);
-            }
-            deque.removeFirst(); // 연산된 결과는 꺼낸다.
-        }
-        System.out.println(calculation);
+        System.out.println(ans);
     }
 }
