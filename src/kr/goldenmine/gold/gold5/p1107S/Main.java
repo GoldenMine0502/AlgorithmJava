@@ -6,62 +6,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static class FastReader {
-        BufferedReader br;
-        StringTokenizer st;
-
-        public FastReader() {
-            br = new BufferedReader(
-                    new InputStreamReader(System.in));
-        }
-
-        String next() {
-            while (st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return st.nextToken();
-        }
-
-        int nextInt() {
-            return Integer.parseInt(next());
-        }
-
-        long nextLong() {
-            return Long.parseLong(next());
-        }
-
-        double nextDouble() {
-            return Double.parseDouble(next());
-        }
-
-        String nextLine() {
-            String str = "";
-
-            while (st == null || !st.hasMoreElements()) {
-                try {
-                    st = new StringTokenizer(br.readLine());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            try {
-                if (st.hasMoreTokens()) {
-                    str = st.nextToken("\n");
-                } else {
-                    str = br.readLine();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return str;
-        }
-    }
-
     static class Point {
         int value;
         int depth;
@@ -74,13 +18,12 @@ public class Main {
         }
     }
 
-    public static int bfs(int N, List<Integer> possible, Point start) {
+    static int bfs(int N, List<Integer> possible, Point start) {
         ArrayDeque<Point> points = new ArrayDeque<>();
 
         boolean[] visited = new boolean[1000001];
 
         points.add(start); // insert=false -> +, -만 사용가능
-//        points.add(new Point(0, 0, true));
         visited[start.value] = true;
 
         for(int i : possible) {
@@ -127,17 +70,18 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        FastReader scan = new FastReader();
+        Scanner scan = new Scanner(System.in);
 
         int N = scan.nextInt();
         int M = scan.nextInt();
 
+        // 불가능한 숫자 목록
         Set<Integer> impossible = new HashSet<>();
-
         for (int i = 0; i < M; i++) {
             impossible.add(scan.nextInt());
         }
 
+        // 가능한 숫자 목록
         List<Integer> possible = new ArrayList<>();
         for(int i = 0; i <= 9; i++) {
             if(impossible.contains(i)) continue;
@@ -145,29 +89,29 @@ public class Main {
             possible.add(i);
         }
 
-//        System.out.println(set);
-
-        ArrayDeque<Point> points = new ArrayDeque<>();
-
-        int minimum = Integer.MAX_VALUE;
-
-        int start = bfs(N, possible, new Point(100, 0, false));
-        if(start >= 0) minimum = start;
+        // 가능한 후보군 목록
+        List<Point> starts = new ArrayList<>();
+        starts.add(new Point(100, 0, false));
 
         for(int i : possible) {
-            int res = bfs(N, possible, new Point(i, 1, false));
-            if(res >= 0 && minimum > res) {
+            starts.add(new Point(i, 1, true));
+        }
+
+        // 최솟값 구하기
+        int minimum = Integer.MAX_VALUE;
+
+        for(Point p : starts) {
+            int res = bfs(N, possible, p);
+            if(res != -1 && res < minimum) {
                 minimum = res;
             }
         }
+
+        // 결과 출력
         if(minimum != Integer.MAX_VALUE) {
             System.out.println(minimum);
         } else {
             System.out.println(-1);
         }
-//        int result = bfs(N, set, -1, true);
-//        int result2 = bfs(N, set, 100, false);
-//
-//        System.out.println(Math.min(result, result2));
     }
 }
