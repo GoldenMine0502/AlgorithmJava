@@ -38,7 +38,7 @@ public class Main {
                 return current.depth;
             }
 
-            if(current.insert) { // 뒤에 추가 가능
+            if(current.insert) { // 뒤에 자릿수 추가 가능
                 for(int i : possible) {
                     int nextValue = current.value * 10 + i;
                     if(nextValue >= 1000000) break;
