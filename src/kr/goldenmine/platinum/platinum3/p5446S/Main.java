@@ -71,8 +71,6 @@ public class Main {
         boolean isLeaf;
         boolean root;
 
-        boolean bfsVisited;
-
         public TrieNode(boolean root) {
             this.root = root;
         }
@@ -94,26 +92,9 @@ public class Main {
             return index;
         }
 
-        public char getChar(int index) {
-            char ch;
-            if(0 <= index && index < 10) {
-                ch = (char) (index + '0');
-            } else if(10 <= index && index < 36) {
-                ch = (char) (index + 'a' - 10);
-            } else if(36 <= index && index < 62) {
-                ch = (char) (index + 'A' - 10 - 26);
-            } else {
-                ch = '.';
-            }
-            return ch;
-        }
-
         public void add(String text, int pos, boolean banned) {
             char ch = text.charAt(pos);
             int index = getIndex(ch);
-
-//            this.banned = this.banned | banned;
-//            System.out.println(text + ", " + pos + ", " + banned);
 
             if (childs[index] == null) {
                 childs[index] = new TrieNode(false);
@@ -132,12 +113,11 @@ public class Main {
         }
 
         public int dfs() {
-            return dfs(this, "");
+            return dfs(this);
         }
 
-        public int dfs(TrieNode node, String previous) {
+        public int dfs(TrieNode node) {
             if(!node.banned) {
-//                System.out.println(previous);
                 return 1;
             }
 
@@ -150,14 +130,7 @@ public class Main {
                     count++;
                 }
 
-                count += dfs(child, previous + getChar(i));
-
-//                if(!child.banned || child.isLeaf) { // 밴상태 아니거나 끝에 도달시 카운트 증가
-//                    System.out.println(previous + getChar(i));
-//                    count++;
-//                } else {
-//                    count += dfs(child, previous + getChar(i));
-//                }
+                count += dfs(child);
             }
             return count;
         }
@@ -169,29 +142,18 @@ public class Main {
         int T = scan.nextInt();
 
         while(T-- > 0) {
-            int N = scan.nextInt();
-            List<String> toDelete = new ArrayList<>();
+            TrieNode root = new TrieNode(true);
 
+            int N = scan.nextInt();
             for (int i = 0; i < N; i++) {
-                toDelete.add(scan.next());
+                root.add(scan.next(), 0, false);
             }
 
             int M = scan.nextInt();
-            List<String> toSave = new ArrayList<>();
 
             for (int i = 0; i < M; i++) {
-                toSave.add(scan.next());
-            }
-
-            TrieNode root = new TrieNode(true);
-
-            for (String delete : toDelete) {
-                root.add(delete, 0, false);
-            }
-
-            for (String save : toSave) {
                 root.banned = true;
-                root.add(save, 0, true);
+                root.add(scan.next(), 0, true);
             }
 
             int res = root.dfs();
