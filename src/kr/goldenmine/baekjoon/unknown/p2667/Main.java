@@ -1,4 +1,4 @@
-package kr.goldenmine.baekjoon.hidetier.p2667;
+package kr.goldenmine.baekjoon.unknown.p2667;
 
 import java.io.BufferedReader;
 import java.io.IOException;
