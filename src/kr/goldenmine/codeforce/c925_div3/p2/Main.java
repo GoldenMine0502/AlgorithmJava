@@ -1,9 +1,8 @@
-package kr.goldenmine.codeforce.div3_925.p2;
+package kr.goldenmine.codeforce.c925_div3.p2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
