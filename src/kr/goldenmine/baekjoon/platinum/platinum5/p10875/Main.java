@@ -1,4 +1,4 @@
-package kr.goldenmine.baekjoon.gold.gold2.p1167;
+package kr.goldenmine.baekjoon.platinum.platinum5.p10875;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,51 +64,29 @@ public class Main {
         }
     }
 
-    static class Node {// 다음 노드의 인덱스와, 그 노드로 가는데 필요한 비용을 담고 있다.
-        int idx, cost;
+    static class Info {
+        int move;
+        String direction;
 
-        Node(int idx, int cost) {
-            this.idx = idx;
-            this.cost = cost;
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                    "idx=" + idx +
-                    ", cost=" + cost +
-                    '}';
+        public Info(int move, String direction) {
+            this.move = move;
+            this.direction = direction;
         }
     }
 
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
+        int L = scan.nextInt();
         int N = scan.nextInt();
 
-        List<List<Integer>> nodes = new ArrayList<>();
+        List<Info> nexts = new ArrayList<>();
 
-        for(int i = 1; i <= N; i++) {
-            nodes.add(new ArrayList<>());
+        for (int i = 0; i < N; i++) {
+            int move = scan.nextInt();
+            String direction = scan.next();
+
+            nexts.add(new Info(move, direction));
         }
-
-
-        for(int i = 1; i <= N; i++) {
-
-            while(true) {
-                int start = scan.nextInt();
-                if(start == -1) break;
-                int finish = scan.nextInt();
-
-                nodes.get(start).add(finish);
-            }
-        }
-
-        /*
-
-        2
-        0 3 4 9
-
-         */
     }
 }
