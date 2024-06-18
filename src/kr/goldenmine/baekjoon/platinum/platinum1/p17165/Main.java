@@ -62,116 +62,42 @@ public class Main {
         }
     }
 
-    static class Point {
-        int start;
-        int finish;
-        int depth;
-        List<Integer> previousVisited;
-
-        public Point(int start, int finish, int depth) {
-            this.start = start;
-            this.finish = finish;
-            this.depth = depth;
-        }
-
-        @Override
-        public String toString() {
-            return "Point{" +
-                    "start=" + start +
-                    ", finish=" + finish +
-                    ", depth=" + depth +
-                    '}';
-        }
-    }
-
-    public static void bfs(int N, List<List<Integer>> oppositesList, int[][] results, int start) {
-
-        Queue<Point> queue = new LinkedList<>();
-        boolean[] visited = new boolean[N];
-
-        // 초기 시작
-        List<Integer> finishes = oppositesList.get(start);
-        for(int i = 0; i < finishes.size(); i++) {
-            queue.add(new Point(start, finishes.get(i), 1));
-            visited[finishes.get(i)] = true;
-        }
-
-        while(!queue.isEmpty()) {
-            Point p = queue.poll();
-
-            results[start][p.finish] = p.depth;
-
-            List<Integer> nexts = oppositesList.get(p.finish);
-            for(int i = 0; i < nexts.size(); i++) {
-                Point next = new Point(p.finish, nexts.get(i), p.depth + 1);
-
-                if(!visited[next.finish]) {
-                    visited[next.finish] = true;
-                    queue.add(next);
-                }
-            }
-        }
-    }
-
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
 
         int[][] opposites = new int[N][N];
-        int[][] results = new int[N][N];
 
-        for(int i = 0; i < results.length; i++) {
-            Arrays.fill(results[i], 9000);
-        }
-
-        for(int j = 0; j < N; j++) {
+        for (int j = 0; j < N; j++) {
             String text = scan.next();
-            for(int i = 0; i < N; i++) {
+            for (int i = 0; i < N; i++) {
                 char ch = text.charAt(i);
                 opposites[j][i] = ch;
             }
         }
 
-        List<List<Integer>> oppositesList = new ArrayList<>();
-        for(int i = 0; i < N; i++) {
+        int maxIndex = -1;
+        int maxWinCount = 0;
+        for (int i = 0; i < N; i++) {
             List<Integer> nexts = new ArrayList<>();
-            for(int f = 0; f < N; f++) {
-                if(opposites[i][f] == 'W') {
+            int winCount = 0;
+            for (int f = 0; f < N; f++) {
+                if (opposites[i][f] == 'W') {
                     nexts.add(f);
-//                    System.out.println(i + ", " + f);
+                    winCount++;
                 }
             }
-            oppositesList.add(nexts);
-        }
-
-        for(int i = 0; i < N; i++) {
-            bfs(N, oppositesList, results, i);
-        }
-
-//        for(int j = 0; j < N; j++) {
-//            for(int i = 0; i < N; i++) {
-//                System.out.print(results[j][i] + " ");
-//            }
-//            System.out.println();
-//        }
-
-        int global = -1;
-        int globalMin = Integer.MAX_VALUE;
-        for(int i = 0; i < N; i++) {
-            int localMax = 0;
-            for(int j = 0; j < N; j++) {
-                if(i != j)
-                    localMax = Math.max(results[i][j], localMax);
-            }
-
-            if(globalMin > localMax) {
-                globalMin = localMax;
-                global = i;
+            if(winCount > maxWinCount) {
+                maxWinCount = winCount;
+                maxIndex = i;
             }
         }
 
-        System.out.println(globalMin + " " + (global + 1));
-
+        if (maxWinCount < N - 1) {
+            System.out.println("2 " + (maxIndex + 1));
+        } else {
+            System.out.println("1 " + (maxIndex + 1));
+        }
     }
 }
