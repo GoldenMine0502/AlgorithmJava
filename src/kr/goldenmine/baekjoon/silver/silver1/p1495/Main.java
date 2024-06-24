@@ -1,9 +1,8 @@
-package kr.goldenmine.baekjoon.gold.gold4.p2015A;
+package kr.goldenmine.baekjoon.silver.silver1.p1495;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -67,27 +66,49 @@ public class Main {
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
-        int K = scan.nextInt();
+        int S = scan.nextInt();
+        int M = scan.nextInt();
 
-        int[] Ns = new int[N + 1];
-        for(int i = 1; i <= N; i++) {
-            Ns[i] = scan.nextInt();
+        int[] diffs = new int[N - 1];
+        for(int i = 0; i < N - 1; i++) {
+            diffs[i] = scan.nextInt();
         }
+        int[] dp = new int[N];
+        int[] dp_plus = new int[N];
+        dp[1] = S;
+        // M = 8 / S = 0 /
+        // 4, 3, 2, 4, 3, 1
+        // 4, 7, 9
+        for(int i = 2; i < N; i++) {
+            int offset = diffs[i - 2];
+            int plus = dp[i - 1] + offset;
 
-        HashMap<Integer, Long> map = new HashMap<>();
-        long count = 0;
-        int[] sum = new int[N + 1];
-        for(int i = 1; i <= N; i++) {
-            sum[i] = sum[i - 1] + Ns[i];
-            if(sum[i] == K) { count++; }
+            dp[i] = plus;
+            if(dp[i] > M) {
+                // 초과한 경우
+                // 가장 작은 값부터 빼본다.
+                boolean minus = false;
+                for(int j = i; j >= 1; j--) {
+                    int next = dp[i] - dp[j] * 2;
+                    if(dp_plus[j] == 1 && next <= M) {
+                        dp[i] = next;
+                        dp_plus[j] = 0;
+                        minus = true;
+                        break;
+                    }
+                }
+                if(!minus) {
+                    System.out.println(-1);
+                    return;
+                }
+            } else {
+                dp_plus[i] = 1; // i번째는 더해짐
+            }
         }
+        System.out.println(dp[N - 1]);
 
-        for(int i = 1; i <= N; i++) {
-            count += map.getOrDefault(sum[i] - K, 0L);
-            map.put(sum[i], map.getOrDefault(sum[i], 0L) + 1L);
-            System.out.println(i + ": " + sum[i] + ", " + count + ", " + map + ", " + (sum[i] - K));
-        }
-
-        System.out.println(count);
+        // 14 40 243
+        // 74 39 127 95 63 140 99 96 154 18 137 162 14 88
+        // 150, 164, 2, 139,
     }
 }

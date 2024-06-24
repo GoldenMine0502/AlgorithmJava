@@ -1,10 +1,11 @@
-package kr.goldenmine.baekjoon.gold.gold2.p1202;
+package kr.goldenmine.baekjoon.gold.gold4.p2258;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -64,20 +65,20 @@ public class Main {
         }
     }
 
-    static class Jewel {
+    static class Meat {
         int weight;
-        int value;
+        int price;
 
-        public Jewel(int weight, int value) {
+        Meat(int weight, int price) {
             this.weight = weight;
-            this.value = value;
+            this.price = price;
         }
 
         @Override
         public String toString() {
-            return "Jewel{" +
+            return "Meat{" +
                     "weight=" + weight +
-                    ", value=" + value +
+                    ", price=" + price +
                     '}';
         }
     }
@@ -86,37 +87,63 @@ public class Main {
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
-        int K = scan.nextInt();
+        long M = scan.nextInt();
 
-        Jewel[] jewels = new Jewel[N];
+        List<Meat> meats = new ArrayList<>();
         for(int i = 0; i < N; i++) {
-            int weight = scan.nextInt();
-            int value = scan.nextInt();
-            jewels[i] = new Jewel(weight, value);
+            meats.add(new Meat(scan.nextInt(), scan.nextInt()));
         }
 
-        int[] bags = new int[K];
-        for(int i = 0; i < K; i++) {
-            bags[i] = scan.nextInt();
-        }
-
-        Arrays.sort(jewels, new Comparator<Jewel>() {
-            @Override
-            public int compare(Jewel o1, Jewel o2) {
-                if(o1.value != o2.value) {
-                    return -Integer.compare(o1.value, o2.value);
-                } else {
-                    return Integer.compare(o1.weight, o2.weight);
-                }
+        meats.sort((o1, o2) -> {
+            int c = Integer.compare(o1.weight, o2.weight);
+            if(c == 0) {
+                return Integer.compare(o1.price, o2.price);
             }
+            return c;
         });
+        /*
+5 9
+1 2
+2 4
+3 6
+4 10
+4 8
+         */
 
-        int[] results = new int[N];
-        int index = 0;
+//        System.out.println(meats);
 
-        Arrays.sort(bags);
+        int weightSum = 0;
+        int lastWeightSum = 0;
+        int currentWeight = 0;
+        int currentPrice = 0;
+        int currentWeightSum = 0;
+        long min = Long.MAX_VALUE;
+        for(int i = 0; i < meats.size(); i++) {
+            Meat meat = meats.get(i);
+            if(meat.weight > currentWeight) {
+                lastWeightSum = currentWeightSum;
 
-        System.out.println(Arrays.toString(jewels));
-        System.out.println(Arrays.toString(bags));
+                currentWeight = meat.weight;
+                currentWeightSum = currentWeight;
+
+
+                weightSum += meat.weight;
+                currentPrice = meat.price;
+            } else {
+                currentWeightSum += meat.weight;
+                weightSum += meat.weight;
+                currentPrice += meat.price;
+            }
+
+            if(weightSum >= M) {
+//                System.out.println(currentWeightSum + ", " + lastWeightSum + ", " + currentPrice + ", " + (weightSum - currentWeightSum + meat.weight));
+                min = Math.min(min, currentPrice);
+            }
+
+//            meat.weight += lastWeightSum;
+//            System.out.println(weightSum + ", " + lastWeightSum + ", " + currentWeight + ", " + currentPrice + ", " + currentWeightSum);
+        }
+//        System.out.println(meats);
+        System.out.println(min);
     }
 }

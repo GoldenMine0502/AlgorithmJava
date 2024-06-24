@@ -1,9 +1,8 @@
-package kr.goldenmine.baekjoon.gold.gold4.p2015A;
+package kr.goldenmine.baekjoon.gold.gold1.p1035;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -67,27 +66,5 @@ public class Main {
         FastReader scan = new FastReader();
 
         int N = scan.nextInt();
-        int K = scan.nextInt();
-
-        int[] Ns = new int[N + 1];
-        for(int i = 1; i <= N; i++) {
-            Ns[i] = scan.nextInt();
-        }
-
-        HashMap<Integer, Long> map = new HashMap<>();
-        long count = 0;
-        int[] sum = new int[N + 1];
-        for(int i = 1; i <= N; i++) {
-            sum[i] = sum[i - 1] + Ns[i];
-            if(sum[i] == K) { count++; }
-        }
-
-        for(int i = 1; i <= N; i++) {
-            count += map.getOrDefault(sum[i] - K, 0L);
-            map.put(sum[i], map.getOrDefault(sum[i], 0L) + 1L);
-            System.out.println(i + ": " + sum[i] + ", " + count + ", " + map + ", " + (sum[i] - K));
-        }
-
-        System.out.println(count);
     }
 }

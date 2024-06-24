@@ -1,4 +1,4 @@
-package kr.goldenmine.baekjoon.gold.gold2.p1202;
+package kr.goldenmine.baekjoon.gold.gold2.p1508;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,59 +64,85 @@ public class Main {
         }
     }
 
-    static class Jewel {
-        int weight;
+    static class Point {
+        int index;
         int value;
 
-        public Jewel(int weight, int value) {
-            this.weight = weight;
+        Point(int index, int value) {
+            this.index = index;
             this.value = value;
         }
 
         @Override
         public String toString() {
-            return "Jewel{" +
-                    "weight=" + weight +
+            return "Point{" +
+                    "index=" + index +
                     ", value=" + value +
                     '}';
         }
     }
 
+    static int N;
+    static int M;
+    static int K;
+
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
-        int N = scan.nextInt();
-        int K = scan.nextInt();
+        N = scan.nextInt();
+        M = scan.nextInt();
+        K = scan.nextInt();
 
-        Jewel[] jewels = new Jewel[N];
-        for(int i = 0; i < N; i++) {
-            int weight = scan.nextInt();
-            int value = scan.nextInt();
-            jewels[i] = new Jewel(weight, value);
-        }
-
-        int[] bags = new int[K];
+        int[] arr = new int[K];
         for(int i = 0; i < K; i++) {
-            bags[i] = scan.nextInt();
+            arr[i] = scan.nextInt();
         }
-
-        Arrays.sort(jewels, new Comparator<Jewel>() {
-            @Override
-            public int compare(Jewel o1, Jewel o2) {
-                if(o1.value != o2.value) {
-                    return -Integer.compare(o1.value, o2.value);
-                } else {
-                    return Integer.compare(o1.weight, o2.weight);
-                }
+        Point[] diff = new Point[K - 1];
+        for(int i = 0; i < K - 1; i++) {
+            diff[i] = new Point(i, arr[i + 1] - arr[i]);
+        }
+        Arrays.sort(diff, (o1, o2) -> {
+            int diff1 = Integer.compare(o1.value, o2.value);
+            if(diff1 == 0) {
+                return Integer.compare(o1.index, o2.index);
+            } else {
+                return diff1;
             }
         });
 
-        int[] results = new int[N];
-        int index = 0;
+        System.out.println(Arrays.toString(diff));
+        alwaysSide(diff);
+        computeDefault(diff);
+    }
 
-        Arrays.sort(bags);
+    static int[] alwaysSide(Point[] diff) {
+        int[] res = new int[K];
+        if(M >= 2)
+            res[0] = 1;
+        res[K - 1] = 1;
+        int count = 0;
+        for(int i = 0; i < K - 1; i++) {
+            if(count == M - 2) break;
 
-        System.out.println(Arrays.toString(jewels));
-        System.out.println(Arrays.toString(bags));
+            int index = diff[K - 2 - i].index;
+            if(index != 0) {
+                res[index] = 1;
+                count++;
+            }
+        }
+        System.out.println(Arrays.toString(res));
+        return res;
+    }
+
+    static int[] computeDefault(Point[] diff) {
+        int[] res = new int[K];
+        for(int i = 0; i < M; i++) {
+            int index = diff[K - 2 - i].index;
+            res[index] = 1;
+        }
+
+        System.out.println(Arrays.toString(res));
+
+        return res;
     }
 }
