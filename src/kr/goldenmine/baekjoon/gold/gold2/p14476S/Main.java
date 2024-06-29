@@ -9,9 +9,7 @@ public class Main {
         int nextInt() throws Exception {
             int n = 0;
             byte c;
-            while ((c = read()) <= 32) {
-                if (size < 0) return -1;
-            }
+            while ((c = read()) <= 32);
             do n = (n << 3) + (n << 1) + (c & 15);
             while (isNumber(c = read()));
             return n;
@@ -22,15 +20,12 @@ public class Main {
         }
 
         byte read() throws Exception {
-            if (index == size) {
-                size = System.in.read(buffer, index = 0, SIZE);
-                if (size < 0) buffer[0] = -1;
-            }
+            if (index == size) size = System.in.read(buffer, index = 0, SIZE);
             return buffer[index++];
         }
     }
 
-    public static int gcd(int a, int b) {
+    static int gcd(int a, int b) {
         while (b != 0) {
             int gcd = a % b;
             a = b;
@@ -75,7 +70,7 @@ public class Main {
         }
 
         if (arr[removedIndex] % max == 0) { // 나눠 떨어지면 약수
-            System.out.println(-1);
+            System.out.println("-1");
         } else { // 나눠 떨어지지 않으면 약수 아님
             System.out.println(String.valueOf(max) + ' ' + arr[removedIndex]);
         }
