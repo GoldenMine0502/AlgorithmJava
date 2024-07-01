@@ -67,9 +67,7 @@ public class Main {
 
         long N = scan.nextLong();
 
-        while(N >= 2) {
-
-        }
+//        System.out.println(isP);
     }
 
     /**
