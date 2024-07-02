@@ -3,6 +3,7 @@ package kr.goldenmine.baekjoon.platinum.platinum5.p1086;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -90,14 +91,19 @@ public class Main {
 
         int N = scan.nextInt();
 
-        int[] arr = new int[N];
-        for(int i = 0; i < arr.length; i++) {
-            arr[i] = scan.nextInt();
+        String[] arr = new String[N];
+        for(int i = 0; i < N; i++) {
+            arr[i] = scan.next();
         }
 
         int K = scan.nextInt();
+        BigInteger BigK = new BigInteger(String.valueOf(K));
 
-        int[] counts = new int[K];
+        int[] numbers = new int[N];
+        for(int i = 0; i < N; i++) {
+            numbers[i] = new BigInteger(arr[i]).mod(BigK).intValue();
+        }
 
+        // D[s][i]: 현재까지 집합 s에 포함된 수를 이용했고, 그렇게 만들어진 수가 i일 때, 남은 수들을 이용하여 만들 수 있는 k로 나누어 떨어지는 수들의 개수
     }
 }
