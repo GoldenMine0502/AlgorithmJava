@@ -35,8 +35,17 @@ public class FastOutputs {
             nChars = size;
         }
 
-        public void writeInt(int n) {
+        public void writeInt(int n) throws IOException {
+            int d;
+            for(d = 10 - 1; d >= 0; d--) {
+                bufForWriteNumber[d] = (char) (n % 10 + '0');
+                n /= 10;
+                if(n == 0) break;
+            }
 
+            for(; d < 10; d++) {
+                write(bufForWriteNumber[d]);
+            }
         }
 
         public void writeString(String s) throws IOException {
