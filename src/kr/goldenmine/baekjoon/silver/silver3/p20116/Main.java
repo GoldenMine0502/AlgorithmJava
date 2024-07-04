@@ -68,27 +68,24 @@ public class Main {
         int N = scan.nextInt();
         double W = scan.nextInt();
 
-        int[] sum = new int[N + 1];
-        int[] min = new int[N + 1];
-        int[] max = new int[N + 1];
-        min[0] = 999999999;
-        max[0] = -999999999;
-        boolean verify = true;
-        for(int i = 1; i <= N; i++) {
-            int v = scan.nextInt();
-            sum[i] = sum[i - 1] + v;
-            min[i] = Math.min(min[i - 1], v);
-            max[i] = Math.max(max[i - 1], v);
-            double currentAvg = (double) sum[i] / i; // 무게 중심
-
-            if(currentAvg - W / 2 < min[i] - W / 2) verify=false;
-            if(currentAvg + W / 2 > max[i] + W / 2) verify=false;
-
-            System.out.println((currentAvg - W / 2) + ", " + min[i] + ", " + (currentAvg + W / 2) + ", " + max[i] + ", " + sum[i] + ", " + verify);
+        int[] arr = new int[N];
+        for(int i = 0; i < N; i++) {
+            arr[i] = scan.nextInt();
         }
 
-        System.out.println(verify ? "stable" : "unstable");
+        long sum = 0;
+        for(int i = N - 1; i >= 1; i--) {
+            sum += arr[i];
 
+            double avg = (double) sum / (N - i);
+            int nextMid = arr[i - 1];
 
+            if(Math.abs(avg - nextMid) >= W) {
+                System.out.println("unstable");
+                return;
+            }
+        }
+
+        System.out.println("stable");
     }
 }
