@@ -20,27 +20,36 @@ public class FastOutputs {
     }
 
     // 기본적으로 BufferedWriter에는 모든 메소드에 synchronized가 붙어있으므로 최대한 synchronized를 빼주도록 작동
-    static class UnsynchronizedWriter extends BufferedWriter {
+    static class Writer extends BufferedWriter {
         char[] buf;
         int nChars;
         int index;
-        Writer out;
 
         char[] bufForWriteNumber = new char[22];
 
-        UnsynchronizedWriter(Writer out, int size) {
-            super(out);
-            this.out = out;
+        Writer() {
+            this(1 << 10);
+        }
+
+        Writer(int size) {
+            super(new OutputStreamWriter(System.out));
             buf = new char[size];
             nChars = size;
         }
 
         public void writeInt(int n) throws IOException {
+            boolean minus = n < 0;
+            if(minus) n = ~n + 1;
+
             int d;
             for(d = 10 - 1; d >= 0; d--) {
                 bufForWriteNumber[d] = (char) (n % 10 + '0');
                 n /= 10;
                 if(n == 0) break;
+            }
+
+            if(minus) {
+                bufForWriteNumber[--d] = '-';
             }
 
             for(; d < 10; d++) {
@@ -68,14 +77,15 @@ public class FastOutputs {
 
         @Override
         public void flush() throws IOException {
-            out.write(buf, 0, index);
+            super.write(buf, 0, index);
             index = 0;
-            out.flush(); // TODO 여기에 synchronized가 달려있어서 없애야한다
+            super.flush(); // TODO 여기에 synchronized가 달려있어서 없애야한다
         }
 
         @Override
         public void close() throws IOException {
             flush();
+            super.close();
         }
     }
 }
