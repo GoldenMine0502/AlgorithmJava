@@ -1,4 +1,4 @@
-package kr.goldenmine.baekjoon.silver.silver3.p22233;
+package kr.goldenmine.baekjoon.silver.silver3.p22233S;
 
 import java.io.*;
 import java.util.HashSet;
