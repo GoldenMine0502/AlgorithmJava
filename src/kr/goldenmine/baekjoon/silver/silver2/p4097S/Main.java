@@ -1,4 +1,4 @@
-package kr.goldenmine.baekjoon.silver.silver2.p4097;
+package kr.goldenmine.baekjoon.silver.silver2.p4097S;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
