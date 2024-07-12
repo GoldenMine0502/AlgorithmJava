@@ -1,8 +1,10 @@
-package kr.goldenmine.baekjoon.silver.silver1.p1495;
+package kr.goldenmine.baekjoon.silver.silver1.p1495A;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -69,46 +71,50 @@ public class Main {
         int S = scan.nextInt();
         int M = scan.nextInt();
 
-        int[] diffs = new int[N - 1];
-        for(int i = 0; i < N - 1; i++) {
-            diffs[i] = scan.nextInt();
+        int[] arr = new int[N + 1];
+        for(int i = 1; i <= N; i++) {
+            arr[i] = scan.nextInt();
         }
-        int[] dp = new int[N];
-        int[] dp_plus = new int[N];
-        dp[1] = S;
-        // M = 8 / S = 0 /
-        // 4, 3, 2, 4, 3, 1
-        // 4, 7, 9
-        for(int i = 2; i < N; i++) {
-            int offset = diffs[i - 2];
-            int plus = dp[i - 1] + offset;
 
-            dp[i] = plus;
-            if(dp[i] > M) {
-                // 초과한 경우
-                // 가장 작은 값부터 빼본다.
-                boolean minus = false;
-                for(int j = i; j >= 1; j--) {
-                    int next = dp[i] - dp[j] * 2;
-                    if(dp_plus[j] == 1 && next <= M) {
-                        dp[i] = next;
-                        dp_plus[j] = 0;
-                        minus = true;
-                        break;
+        int[] volumes = new int[M + 1]; // 해당 볼륨을 지난 마지막 인덱스
+        for(int i = 0; i <= M; i++) {
+            volumes[i] = -1;
+        }
+
+        volumes[S] = 0;
+
+
+        List<Integer> buffer = new ArrayList<>();
+        for(int i = 1; i <= N; i++) {
+            buffer.clear();
+            for(int j = 0; j <= M; j++) {
+                if(volumes[j] == i - 1) { // 이전 값에서 가능한 후보 목록 등록
+                    int minus = j - arr[i];
+                    int plus = j + arr[i];
+
+//                    System.out.println(j + ", " + minus + ", " + plus);
+                    if(minus >= 0) {
+                        buffer.add(minus);
+                    }
+                    if(plus <= M) {
+                        buffer.add(plus);
                     }
                 }
-                if(!minus) {
-                    System.out.println(-1);
-                    return;
-                }
-            } else {
-                dp_plus[i] = 1; // i번째는 더해짐
             }
-        }
-        System.out.println(dp[N - 1]);
 
+//            System.out.println(buffer);
+
+            for(int k : buffer) volumes[k] = i; // 해당 인덱스로 지정
+        }
+
+        int max = -1;
+        for(int i = 0; i <= M; i++) {
+            if(volumes[i] == N) max = Math.max(max, i);
+        }
+
+        System.out.println(max);
         // 14 40 243
         // 74 39 127 95 63 140 99 96 154 18 137 162 14 88
-        // 150, 164, 2, 139,
+        // 114, (153, 75), (26, 202), (121, 107), (184, 58, 170, 44)
     }
 }
