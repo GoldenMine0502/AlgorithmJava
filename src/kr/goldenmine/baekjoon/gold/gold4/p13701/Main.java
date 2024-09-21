@@ -22,34 +22,34 @@ public class Main {
         byte read() throws Exception {
             if (index == size) {
                 size = System.in.read(buffer, index = 0, SIZE);
-                if (size < 0) buffer[0] = -1;
+                if(size == -1) buffer[0] = -1;
             }
             return buffer[index++];
         }
     }
 
     // 기본적으로 BufferedWriter에는 모든 메소드에 synchronized가 붙어있으므로 최대한 synchronized를 빼주도록 작동
-    static class UnsynchronizedWriter extends BufferedWriter {
-        char[] buf;
+    static class UnsynchronizedWriter extends BufferedOutputStream {
+        byte[] buf;
         int nChars;
         int index;
-        Writer out;
+        OutputStream out;
 
-        UnsynchronizedWriter(Writer out, int size) {
-            super(out);
+        UnsynchronizedWriter(OutputStream out, int size) {
+            super(out, size);
             this.out = out;
-            buf = new char[size];
+            buf = new byte[size];
             nChars = size;
         }
 
         @Override
-        public void write(char[] cbuf, int off, int len) throws IOException {
+        public void write(byte[] cbuf, int off, int len) throws IOException {
 
         }
 
         public void write(int c) throws IOException {
             if (index >= nChars) flush();
-            buf[index++] = (char) c;
+            buf[index++] = (byte) c;
         }
 
         @Override
@@ -92,18 +92,18 @@ public class Main {
         // Bitset Array
         int[] arr = new int[1 << 20];
 
-        UnsynchronizedWriter w = new UnsynchronizedWriter(new OutputStreamWriter(System.out), 1 << 16);
+        UnsynchronizedWriter w = new UnsynchronizedWriter(System.out, 1 << 15);
         int n;
-        char[] digits = new char[10]; // 출력할 숫자는 최대 8자리이므로
+        int[] digits = new int[10]; // 출력할 숫자는 최대 8자리이므로
         while((n = scan.nextInt()) != -1) {
 
-            if((arr[n / 32] & (1 << n)) == 0) {
-                arr[n / 32] |= 1 << n;
+            if((arr[n >> 5] & (1 << n)) == 0) {
+                arr[n >> 5] |= 1 << n;
 
                 // String을 만들지 않기 위해 char배열을 재사용 하는 방향으로 작동한다
                 int d;
                 for(d = 10 - 1; d >= 0; d--) {
-                    digits[d] = (char) (n % 10 + '0');
+                    digits[d] = n % 10 + '0';
                     n /= 10;
                     if(n == 0) break;
                 }
