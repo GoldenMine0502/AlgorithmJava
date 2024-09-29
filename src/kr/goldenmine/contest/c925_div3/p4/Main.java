@@ -1,9 +1,10 @@
-package kr.goldenmine.codeforce.c925_div3.p3;
+package kr.goldenmine.contest.c925_div3.p4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -67,53 +68,42 @@ public class Main {
         FastReader scan = new FastReader();
 
         int T = scan.nextInt();
-        StringBuilder sb = new StringBuilder();
+
         while(T-- > 0) {
             int N = scan.nextInt();
+            int X = scan.nextInt();
+            int Y = scan.nextInt();
 
-            boolean res = true;
-
-            int[] arr = new int[N];
-            int[] sums = new int[N];
-            int sum = 0;
+            Integer[] arr = new Integer[N];
             for(int i = 0; i < N; i++) {
                 arr[i] = scan.nextInt();
-                sum += arr[i];
-                sums[i] = sum;
             }
-            int goal = (int)Math.ceil((double)sum / N);
+            Arrays.sort(arr, Comparator.comparingInt(o -> o % X));
 
-            System.out.println(Arrays.toString(sums) + ", " + goal);
-            System.out.println(Arrays.toString(arr));
+            int count = 0;
+            // 1 10 15 3 8 12 15
+            // 1 0 0 3 3 2 0
+            // 0 0 0 1 2 3 3
+            int start = 0;
+            int finish = N - 1;
 
-            for(int i = 0; i < N - 1; i++) {
-                if(arr[i + 1] < goal) {
-                    int cangive = Math.min(goal - arr[i + 1], arr[i]);
-                    arr[i] -= cangive;
-                    arr[i + 1] += cangive;
+            while(start < finish) {
+                int sum = arr[start] + arr[finish];
+                System.out.println(sum + " , " + start + ", " + finish);
+                if(sum % X == 0 && (arr[start] - arr[finish] + Y) % Y == 0) {
+                    count++;
                 }
 
-                if(arr[i] > goal) {
-                    int cangive = arr[i] - goal;
-                    arr[i] -= cangive;
-                    arr[i + 1] += cangive;
+                int leftDiff = Math.abs(arr[start] % X - arr[start + 1] % X) % X;
+                int rightDiff = Math.abs(arr[finish] % X - arr[finish - 1] % X) % X;
+
+                if(leftDiff < rightDiff) {
+                    start++;
+                } else {
+                    finish--;
                 }
-//                if(arr[i] > goal) {
-//                    int sub = arr[i] - goal;
-//                    arr[i] = goal;
-//                    arr[i + 1] += sub;
-//                } else if(arr[i] < goal) {
-//                    res = false;
-////                    break;
-//                }
-                System.out.println(Arrays.toString(arr));
             }
-
-            res = res && arr[N - 1] == goal;
-
-            sb.append(res ? "Yes" : "No");
-            sb.append('\n');
+            System.out.println(count);
         }
-        System.out.println(sb);
     }
 }

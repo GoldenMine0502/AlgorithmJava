@@ -1,10 +1,8 @@
-package kr.goldenmine.codeforce.c925_div3.p4;
+package kr.goldenmine.contest.c925_div3.p2;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -64,46 +62,43 @@ public class Main {
         }
     }
 
+
+
     public static void main(String[] args) {
         FastReader scan = new FastReader();
 
         int T = scan.nextInt();
-
+        StringBuilder sb = new StringBuilder();
         while(T-- > 0) {
             int N = scan.nextInt();
-            int X = scan.nextInt();
-            int Y = scan.nextInt();
 
-            Integer[] arr = new Integer[N];
+            boolean res = true;
+
+            int[] arr = new int[N];
+            int sum = 0;
             for(int i = 0; i < N; i++) {
                 arr[i] = scan.nextInt();
+                sum += arr[i];
             }
-            Arrays.sort(arr, Comparator.comparingInt(o -> o % X));
+            int goal = sum / N;
 
-            int count = 0;
-            // 1 10 15 3 8 12 15
-            // 1 0 0 3 3 2 0
-            // 0 0 0 1 2 3 3
-            int start = 0;
-            int finish = N - 1;
-
-            while(start < finish) {
-                int sum = arr[start] + arr[finish];
-                System.out.println(sum + " , " + start + ", " + finish);
-                if(sum % X == 0 && (arr[start] - arr[finish] + Y) % Y == 0) {
-                    count++;
+            for(int i = 0; i < N - 1; i++) {
+                if(arr[i] > goal) {
+                    int sub = arr[i] - goal;
+                    arr[i] = goal;
+                    arr[i + 1] += sub;
+                } else if(arr[i] < goal) {
+                    res = false;
+                    break;
                 }
-
-                int leftDiff = Math.abs(arr[start] % X - arr[start + 1] % X) % X;
-                int rightDiff = Math.abs(arr[finish] % X - arr[finish - 1] % X) % X;
-
-                if(leftDiff < rightDiff) {
-                    start++;
-                } else {
-                    finish--;
-                }
+//                System.out.println(T + ", " + Arrays.toString(arr));
             }
-            System.out.println(count);
+
+            res = res && arr[N - 1] == goal;
+
+            sb.append(res ? "Yes" : "No");
+            sb.append('\n');
         }
+        System.out.println(sb);
     }
 }

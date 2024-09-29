@@ -1,4 +1,4 @@
-package kr.goldenmine.codeforce.c926_div2.p2;
+package kr.goldenmine.contest.c953_div2.p4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,14 +69,12 @@ public class Main {
 
         while(T-- > 0) {
             int N = scan.nextInt();
-            int K = scan.nextInt();
+            int C = scan.nextInt();
 
-            int numberOfRemove2 = (N - 1) * 2;
-
-            int res = Math.min(K / 2, numberOfRemove2);
-            K -= res * 2;
-//            res += K;
-            System.out.println(res + K);
+            int[] elect = new int[N];
+            for(int i = 0; i < N; i++) {
+                elect[i] = scan.nextInt();
+            }
         }
     }
 }

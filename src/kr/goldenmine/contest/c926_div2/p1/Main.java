@@ -1,4 +1,4 @@
-package kr.goldenmine.codeforce.c926_div2.p1;
+package kr.goldenmine.contest.c926_div2.p1;
 
 import java.io.BufferedReader;
 import java.io.IOException;
