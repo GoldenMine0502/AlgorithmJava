@@ -1,5 +1,7 @@
 package kr.goldenmine.templates;
 
+import java.util.Arrays;
+
 public class PrimeNumbers {
     /*
     START OF MILLAR-RABIN PRIMALITY TEST
@@ -112,5 +114,47 @@ public class PrimeNumbers {
 
     public static int lcm(int a, int b) {
         return a * b / gcd(a, b);
+    }
+
+    static void 에라토스테네스() {
+        int n = 1000_0000;
+        boolean[] isPrime = new boolean[n + 1];
+
+        // 0과 1은 소수가 아니므로 false, 나머지는 true로 초기화
+        Arrays.fill(isPrime, true);
+        isPrime[0] = isPrime[1] = false;
+
+        // 에라토스테네스의 체 알고리즘 적용
+        for (int i = 2; i * i<= n; i++) {
+            if (isPrime[i]) { // i가 소수인 경우
+//                if(!multiplyExact(i, i)) continue;
+                for (int j = i * i; j <= n; j += i) { // i의 배수들은 소수가 아니므로 false로 설정
+                    isPrime[j] = false;
+                }
+            }
+        }
+    }
+
+    // 소수 판별 함수
+    public static boolean isPrime(int n) {
+        // 2보다 작은 수는 소수가 아님
+        if (n <= 1) {
+            return false;
+        }
+        // 2와 3은 소수
+        if (n <= 3) {
+            return true;
+        }
+        // 2나 3으로 나누어 떨어지는 경우 소수 아님
+        if (n % 2 == 0 || n % 3 == 0) {
+            return false;
+        }
+        // 6k ± 1 규칙을 사용하여 나누어 떨어지는지 확인
+        for (int i = 5; i * i <= n; i += 6) {
+            if (n % i == 0 || n % (i + 2) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }
