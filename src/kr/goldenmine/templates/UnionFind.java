@@ -1,23 +1,31 @@
 package kr.goldenmine.templates;
 
 public class UnionFind {
-    public static int find(int[] arr, int value) {
-        if(arr[value] == value)
+    static int find(int[] parent, int value) {
+        if(parent[value] == value)
             return value;
-        return arr[value] = find(arr, arr[value]);
+        return parent[value] = find(parent, parent[value]); // path compression
     }
 
-    public static void merge(int[] arr, int x, int y) {
-        x = find(arr, x);
-        y = find(arr, y);
+    // by rank
+    static void union(int[] parent, int[] rank, int x, int y) {
+        x = find(parent, x);
+        y = find(parent, y);
+
         if(x == y) return;
-        arr[y] = x;
+
+        if(rank[x] < rank[y]) {
+            parent[x] = y;
+            rank[y] += rank[x];
+        } else {
+            parent[y] = x;
+            rank[x] += rank[y];
+        }
     }
 
-    public static boolean isUnion(int[] arr, int x, int y) {
-        x = find(arr, x);
-        y = find(arr, y);
-
+    static boolean isUnion(int[] parent, int x, int y) {
+        x = find(parent, x);
+        y = find(parent, y);
         return x == y;
     }
 }
