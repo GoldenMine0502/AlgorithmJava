@@ -32,7 +32,7 @@ public class FastOutputs {
         }
 
         Writer(int size) {
-            super(new OutputStreamWriter(System.out));
+            super(new OutputStreamWriter(System.out), size);
             buf = new char[size];
             nChars = size;
         }
