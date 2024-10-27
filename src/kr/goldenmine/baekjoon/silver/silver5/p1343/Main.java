@@ -76,9 +76,37 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Reader scan = new Reader();
 
-        String str = scan.nextString();
-        for(int i = 0; i < str.length(); i++){
+        char[] str = scan.nextString().toCharArray();
+        for(int i = 0; i < str.length; i++){
+            if(i < str.length - 3) {
+                if(str[i] == 'X' && str[i + 1] == 'X' && str[i + 2] == 'X' && str[i + 3] == 'X') {
+                    str[i] = 'A';
+                    str[i + 1] = 'A';
+                    str[i + 2] = 'A';
+                    str[i + 3] = 'A';
+                }
+            }
 
+            if(i < str.length - 1) {
+                if(str[i] == 'X' && str[i + 1] == 'X') {
+                    str[i] = 'B';
+                    str[i + 1] = 'B';
+                }
+            }
+        }
+
+        int count = 0;
+        for(int i = 0; i < str.length; i++) {
+            if(str[i] != 'X') {
+                count++;
+            }
+        }
+        if(count == str.length) {
+            for (char c : str) {
+                System.out.print(c);
+            }
+        } else {
+            System.out.println(-1);
         }
     }
 }
