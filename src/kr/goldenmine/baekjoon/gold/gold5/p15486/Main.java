@@ -83,29 +83,25 @@ public class Main {
         int[] T = new int[N + 1];
         int[] P = new int[N + 1];
 
-        for(int i = 1; i <= N; i++) {
+        for (int i = 1; i <= N; i++) {
             T[i] = scan.nextInt();
             P[i] = scan.nextInt();
         }
 
-        int[] dp = new int[N + 1];
-        int[] maxes = new int[N + 1];
-        int max = 0;
-        for(int i = 1; i <= N; i++) {
-            int next = i + T[i];
-            if(next <= N) {
-                maxes[next] = Math.max(maxes[next], maxes[i] + P[i]);
-                maxes[next] = Math.max(maxes[next], maxes[next - 1]);
-            }
+        int[] dp = new int[N + 2];
+        dp[N] = 0;
+//        for(int i = 0; i < N; i++) {
+//            dp[i] = 9999_9999;
+//        }
 
-            dp[i] = maxes[i];
-            if(i + T[i] <= N + 1) { // 오늘치 일 가능?
-                dp[i] += P[i];
+        for(int i = N; i >= 1; i--) {
+            dp[i] = Math.max(dp[i], dp[i + 1]);
+            if(i + T[i] <= N + 1) {
+                dp[i] = Math.max(dp[i], dp[i + T[i]] + P[i]);
             }
-            max = Math.max(max, dp[i]);
         }
+
 //        System.out.println(Arrays.toString(dp));
-//        System.out.println(Arrays.toString(maxes));
-        System.out.println(max);
+        System.out.println(dp[1]);
     }
 }
