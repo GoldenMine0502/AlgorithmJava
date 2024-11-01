@@ -106,55 +106,35 @@ public class Main {
             return;
         }
 
-        int[] sizes = new int[N + 1];
-        for (int i = 1; i <= N; i++) {
+        int[] sizes = new int[N];
+        for (int i = 0; i < N; i++) {
             sizes[i] = scan.nextInt();
         }
 
         long[][] dp = new long[N + 1][K + 1];
 
         dp[0][0] = S; // 초기 크기
-        for (int n = 1; n <= N; n++) {
+        for (int n = 0; n < N; n++) {
 //            long smallMax = -1;
 
-            for (int k = 0; k <= K; k++) {
-                if (k == 0) {
-                    if (dp[n - 1][0] > 0)
-                        dp[n][0] = dp[n - 1][0] + sizes[n];
-                } else {
-                    // 강화를 함
-                    if (dp[n - 1][k - 1] > 0)
-                        dp[n][k] = Math.max(dp[n][k], dp[n - 1][k - 1] * 2);
+            for (int k = 0; k < K; k++) {
+                if (dp[n][k] <= 0) continue;
 
-                    // 강화를 안함
-                    if (dp[n][k - 1] > 0)
-                        dp[n][k] = Math.max(dp[n][k], dp[n][k - 1] + sizes[n]);
-                }
-
-                if(dp[n][k] >= MEGA * 2) {
-                    dp[n][k] = MEGA * 2; // 메가 * 2 정도면 계속 -되더라도 ㄱㅊ
-                }
-
-                if (dp[n][k] >= MEGA) {
-                    System.out.println("MEGA");
-                    return;
-                }
-
-//                smallMax = Math.max(smallMax, dp[n][k]);
+                dp[n + 1][k] = Math.max(dp[n + 1][k], dp[n][k] + sizes[n]);
+                dp[n + 1][k + 1] = Math.max(dp[n + 1][k + 1], dp[n][k] * 2);
             }
 
-//            if (smallMax <= 0) {
-//                System.out.println(-1);
-//                return;
-//            }
+            if (dp[n][K] > 0)
+                dp[n + 1][K] = Math.max(dp[n + 1][K], dp[n][K] + sizes[n]);
         }
+
         long max = dp[N][K];
-//        for (int k = 0; k <= K; k++) {
-//            max = Math.max(max, dp[N][k]);
-//        }
-        if(max <= 0) {
+        for(int k = 0; k < K; k++) {
+            max = Math.max(max, dp[N][k]);
+        }
+        if (max <= 0) {
             System.out.println("-1");
-        } else if(max < MEGA) {
+        } else if (max <= MEGA) {
             System.out.println(max);
         } else {
             System.out.println("MEGA");
