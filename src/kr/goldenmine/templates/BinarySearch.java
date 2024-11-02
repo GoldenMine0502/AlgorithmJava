@@ -51,7 +51,7 @@ public class BinarySearch {
         return lo;
     }
 
-    // 내림차순 기준
+    // 내림차순 기준 1 2 3 4 5
     // 완벽하게 같은 값 찾을 때
     public static int binarySearch(int[] arr, int value) {
         int left = 0;
@@ -75,9 +75,12 @@ public class BinarySearch {
         int[] arr = {4, 8, 1, 4, 9};
 
         Arrays.sort(arr);
-
-        int value = 9;
-
+        System.out.println(Arrays.toString(arr));
+        int value = 5;
         System.out.println(lowerBound(arr, value) + ", " + upperBound(arr, value) + " = " + (upperBound(arr, value) - lowerBound(arr, value)));
+        value = 4;
+        System.out.println(lowerBound(arr, value) + ", " + upperBound(arr, value) + " = " + (upperBound(arr, value) - lowerBound(arr, value)));
+
+        System.out.println(binarySearch(arr, 8));
     }
 }
