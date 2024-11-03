@@ -1,4 +1,4 @@
-//package kr.goldenmine.contest.c984_div3.C_Hack;
+package kr.goldenmine.contest.c984_div3.C_Hack;
 
 import java.util.Random;
 
