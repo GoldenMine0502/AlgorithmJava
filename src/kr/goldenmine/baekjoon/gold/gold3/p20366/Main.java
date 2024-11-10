@@ -84,11 +84,36 @@ public class Main {
         for(int i = 0; i < N; i++) {
             arr[i] = scan.nextInt();
         }
-/*
-10
-1 3 8 2 8 3 10 49 52 12
- */
+
         Arrays.sort(arr);
-        System.out.println(Arrays.toString(arr));
+//        System.out.println(Arrays.toString(arr));
+
+        int min = 10_0000_0000;
+        for(int a = 0; a < N; a++) {
+            for(int b = a + 1; b < N; b++) {
+                int sum = arr[a] + arr[b];
+
+                int c = 0;
+                int d = N - 1;
+
+                while(c < d) {
+                    int sum2 = arr[c] + arr[d];
+
+                    // 고른 인덱스들이 둘다 a또는 b가 아니어야 함
+                    if((c != a && c != b) && (d != a && d != b)) {
+                        // 갱신
+                        min = Math.min(min, Math.abs(sum - sum2));
+                    }
+
+                    // 만든 값이 크면 d를 내림
+                    if(sum < sum2) {
+                        d--;
+                    } else {
+                        c++;
+                    }
+                }
+            }
+        }
+        System.out.println(min);
     }
 }
