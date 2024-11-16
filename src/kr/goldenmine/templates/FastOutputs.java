@@ -25,7 +25,7 @@ public class FastOutputs {
         int nChars;
         int index;
 
-        char[] bufForWriteNumber = new char[22];
+        char[] bufForWriteNumber = new char[24];
 
         Writer() {
             this(1 << 10);
@@ -42,7 +42,7 @@ public class FastOutputs {
             if(minus) n = ~n + 1;
 
             int d;
-            for(d = 10 - 1; d >= 0; d--) {
+            for(d = 12 - 1; d >= 0; d--) {
                 bufForWriteNumber[d] = (char) (n % 10 + '0');
                 n /= 10;
                 if(n == 0) break;
@@ -52,7 +52,27 @@ public class FastOutputs {
                 bufForWriteNumber[--d] = '-';
             }
 
-            for(; d < 10; d++) {
+            for(; d < 12; d++) {
+                write(bufForWriteNumber[d]);
+            }
+        }
+
+        public void writeLong(long n) throws IOException {
+            boolean minus = n < 0;
+            if(minus) n = ~n + 1;
+
+            int d;
+            for(d = 22 - 1; d >= 0; d--) {
+                bufForWriteNumber[d] = (char) (n % 10 + '0');
+                n /= 10;
+                if(n == 0) break;
+            }
+
+            if(minus) {
+                bufForWriteNumber[--d] = '-';
+            }
+
+            for(; d < 22; d++) {
                 write(bufForWriteNumber[d]);
             }
         }
@@ -73,6 +93,10 @@ public class FastOutputs {
         public void write(int c) throws IOException {
             if (index >= nChars) flush();
             buf[index++] = (char) c;
+        }
+
+        public void newLine() throws IOException {
+            write('\n');
         }
 
         @Override
