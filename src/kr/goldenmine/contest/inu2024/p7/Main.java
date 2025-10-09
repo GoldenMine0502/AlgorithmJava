@@ -77,16 +77,16 @@ public class Main {
         }
     }
 
-    public static double distance(int x, int y, int x2, int y2) {
-        return Math.sqrt((x2 - x) * (x2 - x) + (y2 - y) * (y2 - y));
+    public static long distance(long x, long y, long x2, long y2) {
+        return (x2 - x) * (x2 - x) + (y2 - y) * (y2 - y);
     }
 
     static class Point {
-        int x;
-        int y;
-        double distance;
+        long x;
+        long y;
+        long distance;
 
-        public Point(int y, int x) {
+        public Point(long y, long x) {
             this.y = y;
             this.x = x;
             this.distance = distance(0, 0, x, y);
@@ -108,21 +108,21 @@ public class Main {
         Reader scan = new Reader();
 
         int N = scan.nextInt();
-        int K = scan.nextInt();
+        long K = scan.nextInt();
 
         Point[] points = new Point[N];
         for(int i = 0; i < N; i++) {
-            points[i] = new Point(scan.nextInt(), scan.nextInt());
+            points[i] = new Point(scan.nextLong(), scan.nextLong());
         }
 
         Arrays.sort(points, new Comparator<Point>() {
             @Override
             public int compare(Point o1, Point o2) {
-                double diff = o1.distance - o2.distance;
+                double diff = Math.abs(o1.distance - o2.distance);
 
                 if(diff < 0) {
                     return -1;
-                } else if(diff < EPSILON) {
+                } else if(diff == 0) {
                     return 0;
                 } else {
                     return 1;
@@ -135,11 +135,11 @@ public class Main {
 
             @Override
             public int compare(Point o1, Point o2) {
-                double diff = o1.distance - o2.distance;
+                double diff = Math.abs(o1.distance - o2.distance);
 
                 if(diff < 0) {
                     return -1;
-                } else if(diff < EPSILON) {
+                } else if(diff == 0) {
                     return 0;
                 } else {
                     return 1;
@@ -151,13 +151,13 @@ public class Main {
         for(Point p : points) {
             queue.add(p);
 
-            double currentDistance = p.distance;
+            long currentDistance = p.distance;
 
             while(!queue.isEmpty()) {
                 Point peek = queue.peek();
-                double distance = peek.distance;
+                long distance = peek.distance;
 
-                if(currentDistance - K > distance) {
+                if(currentDistance - K * K > distance) {
                     queue.poll();
                 } else {
                     break;

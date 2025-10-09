@@ -10,21 +10,6 @@ public class Main {
         byte[] buffer = new byte[SIZE];
         int index, size;
 
-        String nextString() throws Exception {
-            StringBuilder sb = new StringBuilder();
-            byte c;
-            while ((c = read()) < 32) { if (size < 0) return "endLine"; }
-            do sb.appendCodePoint(c);
-            while ((c = read()) >= 32); // SPACE 분리라면 >로, 줄당 분리라면 >=로
-            return sb.toString();
-        }
-
-        char nextChar() throws Exception {
-            byte c;
-            while ((c = read()) < 32); // SPACE 분리라면 <=로, SPACE 무시라면 <로
-            return (char)c;
-        }
-
         int nextInt() throws Exception {
             int n = 0;
             byte c;
@@ -36,36 +21,8 @@ public class Main {
             return isMinus ? ~n + 1 : n;
         }
 
-        long nextLong() throws Exception {
-            long n = 0;
-            byte c;
-            boolean isMinus = false;
-            while ((c = read()) <= 32);
-            if (c == 45) { c = read(); isMinus = true; }
-            do n = (n << 3) + (n << 1) + (c & 15);
-            while (isNumber(c = read()));
-            return isMinus ? ~n + 1 : n;
-        }
-
-        double nextDouble() throws Exception {
-            double n = 0, div = 1;
-            byte c;
-            boolean isMinus = false;
-            while ((c = read()) <= 32) { if (size < 0) return -12345; }
-            if (c == 45) { c = read(); isMinus = true; }
-            else if (c == 46) { c = read(); }
-            do n = (n * 10) + (c & 15);
-            while (isNumber(c = read()));
-            if (c == 46) { while (isNumber(c = read())){ n += (c - 48) / (div *= 10); }}
-            return isMinus ? -n : n;
-        }
-
         boolean isNumber(byte c) {
             return 47 < c && c < 58;
-        }
-
-        boolean isAlphabet(byte c){
-            return (64 < c && c < 91) || (96 < c && c < 123);
         }
 
         byte read() throws Exception {
@@ -82,10 +39,10 @@ public class Main {
         int nChars;
         int index;
 
-        char[] bufForWriteNumber = new char[22];
+        char[] bufForWriteNumber = new char[12];
 
         Writer(int size) {
-            super(new OutputStreamWriter(System.out));
+            super(new OutputStreamWriter(System.out), size);
             buf = new char[size];
             nChars = size;
         }
@@ -102,17 +59,11 @@ public class Main {
             }
 
             if(minus) {
-                bufForWriteNumber[--d] = '-';
+                write('-');
             }
 
             for(; d < 10; d++) {
                 write(bufForWriteNumber[d]);
-            }
-        }
-
-        public void writeString(String s) throws IOException {
-            for(int i = 0; i < s.length(); i++) {
-                write(s.charAt(i));
             }
         }
 
@@ -143,6 +94,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         Reader scan = new Reader();
+        Writer w = new Writer(1 << 11);
 
         int N = scan.nextInt();
         int[] sums = new int[N + 1];
@@ -152,7 +104,6 @@ public class Main {
 
         int T = scan.nextInt();
 
-        Writer w = new Writer(1 << 10);
         while(T-- > 0) {
             int a = scan.nextInt();
             int b = scan.nextInt();
@@ -160,6 +111,6 @@ public class Main {
             w.writeInt(sums[b] - sums[a - 1]);
             w.write('\n');
         }
-        w.flush();
+        w.close();
     }
 }

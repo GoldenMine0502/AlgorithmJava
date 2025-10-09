@@ -6,7 +6,7 @@ import java.io.OutputStreamWriter;
 
 public class Main {
     static class Reader {
-        final int SIZE = 1 << 11;
+        final int SIZE = 1 << 10;
         byte[] buffer = new byte[SIZE];
         int index, size;
 
@@ -34,16 +34,15 @@ public class Main {
         }
     }
 
-    // 기본적으로 BufferedWriter에는 모든 메소드에 synchronized가 붙어있으므로 최대한 synchronized를 빼주도록 작동
     static class Writer extends BufferedWriter {
         char[] buf;
         int nChars;
         int index;
 
-        char[] bufForWriteNumber = new char[22];
+        char[] bufForWriteNumber = new char[9];
 
         Writer() {
-            this(1 << 9);
+            this(1 << 10);
         }
 
         Writer(int size) {
@@ -57,24 +56,18 @@ public class Main {
             if(minus) n = ~n + 1;
 
             int d;
-            for(d = 10 - 1; d >= 0; d--) {
+            for(d = 9 - 1; d >= 0; d--) {
                 bufForWriteNumber[d] = (char) (n % 10 + '0');
                 n /= 10;
                 if(n == 0) break;
             }
 
             if(minus) {
-                bufForWriteNumber[--d] = '-';
+                write('-');
             }
 
-            for(; d < 10; d++) {
+            for(; d < 9; d++) {
                 write(bufForWriteNumber[d]);
-            }
-        }
-
-        public void writeString(String s) throws IOException {
-            for(int i = 0; i < s.length(); i++) {
-                write(s.charAt(i));
             }
         }
 
@@ -94,7 +87,7 @@ public class Main {
         public void flush() throws IOException {
             super.write(buf, 0, index);
             index = 0;
-            super.flush(); // TODO 여기에 synchronized가 달려있어서 없애야한다
+            super.flush();
         }
 
         @Override

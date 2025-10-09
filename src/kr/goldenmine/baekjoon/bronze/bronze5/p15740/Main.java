@@ -13,7 +13,7 @@ public class Main {
             byte c;
             while ((c = read()) < 32) { if (size < 0) return "endLine"; }
             do sb.appendCodePoint(c);
-            while ((c = read()) >= 32); // SPACE 분리라면 >로, 줄당 분리라면 >=로
+            while ((c = read()) > 32); // SPACE 분리라면 >로, 줄당 분리라면 >=로
             return sb.toString();
         }
 

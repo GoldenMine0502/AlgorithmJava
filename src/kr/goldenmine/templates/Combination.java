@@ -20,16 +20,16 @@ public class Combination {
 
         System.out.println(count);
 //        boolean[] visited = new boolean[n];
-//
-//        for (int i = 1; i <= n; i++) {
-//            System.out.println("\n" + n + " 개 중에서 " + i + " 개 뽑기");
-//            comb(arr, visited, 0, n, i);
-//        }
-//
-//        for (int i = 1; i <= n; i++) {
-//            System.out.println("\n" + n + " 개 중에서 " + i + " 개 뽑기");
-//            combination(arr, visited, 0, n, i);
-//        }
+
+        for (int i = 1; i <= n; i++) {
+            System.out.println("\n" + n + " 개 중에서 " + i + " 개 뽑기");
+            comb(arr, visited, 0, n, i);
+        }
+
+        for (int i = 1; i <= n; i++) {
+            System.out.println("\n" + n + " 개 중에서 " + i + " 개 뽑기");
+            combination(arr, visited, 0, n, i);
+        }
     }
 
     // 백트래킹 사용
